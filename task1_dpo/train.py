@@ -143,6 +143,63 @@ def prompt_fits(tokenizer, row, max_length):
     return len(prompt_ids) < max_length
 
 
+def filter_long_prompts(tokenizer, rows, cfg, dataset_path):
+    #training and evaluation both go through this, so no run ever sees an unfiltered row
+    #it depends only on the tokenizer and max_sequence_length, so it is the same for every run
+    max_length= int(cfg["max_sequence_length"])
+
+    indices= []
+    dropped= []
+
+    for i in range(len(rows)):
+        if prompt_fits(tokenizer, rows[i], max_length):
+            indices.append(i)
+        else:
+            dropped.append({
+                "row_index": i,
+                "prompt_id": rows[i].get("prompt_id"),
+                "source_index": rows[i].get("source_index"),
+                "length_stratum": rows[i].get("length_stratum"),
+            })
+
+    record= {
+        "dataset": dataset_path,
+        "rows_loaded": len(rows),
+        "max_sequence_length": max_length,
+        "tokenizer": cfg["base_model"],
+        "n_kept": len(indices),
+        "n_dropped": len(dropped),
+        "dropped": dropped,
+    }
+
+    if len(rows) > 0 and "length_stratum" in rows[0]:
+        kept_per_stratum= {}
+
+        for i in indices:
+            stratum= rows[i]["length_stratum"]
+            kept_per_stratum[stratum]= kept_per_stratum.get(stratum, 0) + 1
+
+        record["kept_per_stratum"]= kept_per_stratum
+
+    #one shared file, one entry per dataset file and number of rows loaded
+    path= Path(cfg["results_dir"]) / "filtered_examples.json"
+    records= {}
+
+    if repo_path(path).exists():
+        records= load_json(path)
+
+    records[f"{dataset_path} (first {len(rows)} rows)"]= record
+    save_json(path, records)
+
+    print(
+        f"examples: {len(rows)} loaded, "
+        f"{len(dropped)} dropped (prompt >= {max_length} tokens), "
+        f"{len(indices)} used"
+    )
+
+    return indices
+
+
 def reference_logps(model, tokenizer, rows, indices, cfg, dataset_path, cache_dir):
     #reference= the same model with the lora adapter switched off
     #one cache file per dataset/model/dtype/length, keyed by row number in the dataset file
@@ -286,15 +343,15 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
             "Pass --resume to continue it, or delete that folder to start again."
         )
 
-    #encode_prompt_response raises when the prompt alone fills max_sequence_length, skip those rows
-    indices= [i for i in range(len(rows)) if prompt_fits(tokenizer, rows[i], max_length)]
-    n_skipped= len(rows) - len(indices)
-
-    print(
-        f"examples: {len(rows)} loaded, "
-        f"{n_skipped} skipped (prompt >= {max_length} tokens), "
-        f"{len(indices)} used"
+    #encode_prompt_response raises when the prompt alone fills max_sequence_length, drop those rows
+    #--max-examples slices first (in prepare_dpo_run) and the filter comes after, never topped back up
+    indices= filter_long_prompts(
+        tokenizer,
+        rows,
+        cfg,
+        dataset_path
     )
+    n_skipped= len(rows) - len(indices)
 
     info= run_info(cfg, model, beta, dataset_path, len(indices))
     info["run_name"]= run_name
