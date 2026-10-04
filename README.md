@@ -90,6 +90,24 @@ python -m task1_dpo.ablate_beta --config configs/dpo.yaml
 python -m task1_dpo.analyze_length --config configs/dpo.yaml
 ```
 
+Training commands (run from the repository root; on Colab use `colab/run.ipynb`):
+
+```bash
+# unit tests for the objective
+python -m pytest tests -q
+
+# smoke: Qwen2.5-0.5B, 8 examples, writes under outputs/smoke/ and results/smoke/
+python -m task1_dpo.train --config configs/dpo.yaml --run-name standard --smoke
+
+# quick test of the real model on 32 examples, checkpoint after every optimizer step
+python -m task1_dpo.train --config configs/dpo.yaml --run-name quicktest --max-examples 32 --save-every 1 --resume
+
+# standard DPO, one epoch, final adapter at outputs/task1_dpo/standard
+python -m task1_dpo.train --config configs/dpo.yaml --run-name standard --resume
+```
+
+`--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are skipped and counted in `results/task1_dpo/<run_name>/train_metrics.json`.
+
 ### Task 2 - PPO
 
 ```bash
