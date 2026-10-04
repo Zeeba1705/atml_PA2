@@ -28,3 +28,6 @@ data/*
 # Misc
 *.zip
 .DS_Store
+
+handout/
+style_ref/

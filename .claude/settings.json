@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest *)",
+      "Bash(python -m task1_dpo.* --smoke*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git switch *)",
+      "Bash(git branch*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(pip install *)"
+    ],
+    "deny": [
+      "Edit(./data/**)",
+      "Edit(./cached/**)",
+      "Edit(./checkpoints/**)",
+      "Edit(./manifests/**)",
+      "Edit(./report/**)",
+      "Write(./report/**)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(python -m scripts.download_assets*)"
+    ]
+  }
+}
