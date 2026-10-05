@@ -106,6 +106,24 @@ python -m task1_dpo.train --config configs/dpo.yaml --run-name quicktest --max-e
 python -m task1_dpo.train --config configs/dpo.yaml --run-name standard --resume
 ```
 
+Evaluation commands:
+
+```bash
+# quick test: 8 held-out pairs, one sample per word-limit prompt
+python -m task1_dpo.evaluate --config configs/dpo.yaml --adapter outputs/task1_dpo/quicktest --name quicktest --max-examples 8 --word-limit-samples 1
+
+# standard run on the fixed held-out pairs and the word-limit prompts
+python -m task1_dpo.evaluate --config configs/dpo.yaml --adapter outputs/task1_dpo/standard --name standard
+
+# untrained reference policy as a baseline (no --adapter)
+python -m task1_dpo.evaluate --config configs/dpo.yaml --name reference
+
+# preference accuracy per length stratum on the length-stratified held-out set
+python -m task1_dpo.evaluate --config configs/dpo.yaml --adapter outputs/task1_dpo/standard --name standard --eval-set length
+```
+
+Evaluation writes `eval_metrics.json`, `pairs.jsonl` and `generations.jsonl` (or `stratified_metrics.json` and `stratified_pairs.jsonl` for `--eval-set length`) to `results/task1_dpo/<name>/`.
+
 `--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are dropped for every run (after the `--max-examples` slice, never topped back up); the dropped `prompt_id`s and counts are written to `results/task1_dpo/filtered_examples.json`.
 
 ### Task 2 - PPO

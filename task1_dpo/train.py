@@ -30,8 +30,27 @@ from task1_dpo.dpo import dpo_loss
 SMOKE_MODEL= "Qwen/Qwen2.5-0.5B-Instruct"
 SMOKE_EXAMPLES= 8
 SMOKE_GRAD_ACCUM= 2
+SMOKE_GENERATION_TOKENS= 32
 SMOKE_ROOT= "outputs/smoke/task1_dpo"
 SMOKE_RESULTS= "results/smoke/task1_dpo"
+
+
+def adjust_config(cfg, smoke):
+    #shared by training and evaluation so both see the same model, folders and dtype
+    if smoke:
+        #tiny model and separate folders so a smoke run can never touch a real run
+        cfg["base_model"]= SMOKE_MODEL
+        cfg["grad_accum_steps"]= SMOKE_GRAD_ACCUM
+        cfg["max_generation_tokens"]= SMOKE_GENERATION_TOKENS
+        cfg["standard_output"]= SMOKE_ROOT + "/standard"
+        cfg["length_output"]= SMOKE_ROOT + "/length_balanced"
+        cfg["results_dir"]= SMOKE_RESULTS
+
+    if not torch.cuda.is_available():
+        #float16 on cpu is very slow, the gpu runs keep the config dtype
+        cfg["dtype"]= "float32"
+
+    return cfg
 
 
 def make_collate(tokenizer, max_length):
@@ -47,22 +66,10 @@ def make_collate(tokenizer, max_length):
 
 
 def prepare_dpo_run(config_path: str, dataset_path: str | None = None, beta: float | None = None, max_examples: int | None = None, smoke: bool = False):
-    cfg = load_yaml(config_path)
+    cfg = adjust_config(load_yaml(config_path), smoke)
 
-    if smoke:
-        #tiny model and separate folders so a smoke run can never touch a real run
-        cfg["base_model"]= SMOKE_MODEL
-        cfg["grad_accum_steps"]= SMOKE_GRAD_ACCUM
-        cfg["standard_output"]= SMOKE_ROOT + "/standard"
-        cfg["length_output"]= SMOKE_ROOT + "/length_balanced"
-        cfg["results_dir"]= SMOKE_RESULTS
-
-        if max_examples is None:
-            max_examples= SMOKE_EXAMPLES
-
-    if not torch.cuda.is_available():
-        #float16 on cpu is very slow, the gpu runs keep the config dtype
-        cfg["dtype"]= "float32"
+    if smoke and max_examples is None:
+        max_examples= SMOKE_EXAMPLES
 
     set_seed(int(cfg["seed"]))
     path = dataset_path or cfg["paths"]["dpo_standard_train"]
