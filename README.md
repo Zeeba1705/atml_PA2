@@ -122,6 +122,20 @@ python -m task1_dpo.evaluate --config configs/dpo.yaml --name reference
 python -m task1_dpo.evaluate --config configs/dpo.yaml --adapter outputs/task1_dpo/standard --name standard --eval-set length
 ```
 
+The two studies (each trains what is missing, then evaluates; finished runs and existing metrics files are skipped):
+
+```bash
+# beta study: short forks at the config betas, summary in results/task1_dpo/beta_ablation.json
+python -m task1_dpo.ablate_beta --config configs/dpo.yaml
+
+# length study: length-balanced run plus per-stratum accuracy, summary in results/task1_dpo/length_analysis.json
+python -m task1_dpo.analyze_length --config configs/dpo.yaml
+
+# smoke versions
+python -m task1_dpo.ablate_beta --config configs/dpo.yaml --smoke
+python -m task1_dpo.analyze_length --config configs/dpo.yaml --smoke
+```
+
 Evaluation writes `eval_metrics.json`, `pairs.jsonl` and `generations.jsonl` (or `stratified_metrics.json` and `stratified_pairs.jsonl` for `--eval-set length`) to `results/task1_dpo/<name>/`.
 
 `--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are dropped for every run (after the `--max-examples` slice, never topped back up); the dropped `prompt_id`s and counts are written to `results/task1_dpo/filtered_examples.json`.
