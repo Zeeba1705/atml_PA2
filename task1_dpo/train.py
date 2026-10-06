@@ -53,6 +53,23 @@ def adjust_config(cfg, smoke):
     return cfg
 
 
+def check_setup(data_paths, smoke, allow_cpu):
+    #fail early with the fix spelled out, a fresh colab session has no gpu or data until set up
+    if not torch.cuda.is_available() and not smoke and not allow_cpu:
+        raise SystemExit(
+            "No GPU found. On Colab: Runtime > Change runtime type > GPU, then rerun sections 1-5. "
+            "For a CPU check use --smoke, or pass --allow-cpu to run the full model on CPU anyway."
+        )
+
+    for path in data_paths:
+        if not repo_path(path).exists():
+            raise SystemExit(
+                f"Missing data file {path}. "
+                "Run the course asset step first (section 5 of colab/run.ipynb, "
+                "or python -m scripts.download_assets)."
+            )
+
+
 def make_collate(tokenizer, max_length):
     def collate(rows):
         chosen, rejected = [], []
@@ -65,8 +82,14 @@ def make_collate(tokenizer, max_length):
     return collate
 
 
-def prepare_dpo_run(config_path: str, dataset_path: str | None = None, beta: float | None = None, max_examples: int | None = None, smoke: bool = False):
+def prepare_dpo_run(config_path: str, dataset_path: str | None = None, beta: float | None = None, max_examples: int | None = None, smoke: bool = False, allow_cpu: bool = False):
     cfg = adjust_config(load_yaml(config_path), smoke)
+
+    check_setup(
+        [dataset_path or cfg["paths"]["dpo_standard_train"]],
+        smoke,
+        allow_cpu
+    )
 
     if smoke and max_examples is None:
         max_examples= SMOKE_EXAMPLES
@@ -293,14 +316,14 @@ def save_checkpoint(model, optimizer, scaler, ckpt_dir, state):
     os.replace(tmp_path, ckpt_dir / "trainer_state.pt")
 
 
-def run_training(config_path: str, run_name: str, dataset_path: str | None = None, output_path: str | None = None, beta: float | None = None, max_examples: int | None = None, smoke: bool = False, resume: bool = False, save_every: int = 10):
+def run_training(config_path: str, run_name: str, dataset_path: str | None = None, output_path: str | None = None, beta: float | None = None, max_examples: int | None = None, smoke: bool = False, resume: bool = False, save_every: int = 10, allow_cpu: bool = False):
     if run_name == "standard" and max_examples is not None and not smoke:
         raise SystemExit(
             "run name 'standard' is the full one-epoch run reused by Task 4. "
             "Use another --run-name (e.g. quicktest) together with --max-examples."
         )
 
-    bundle = prepare_dpo_run(config_path, dataset_path, beta, max_examples, smoke)
+    bundle = prepare_dpo_run(config_path, dataset_path, beta, max_examples, smoke, allow_cpu)
     cfg = bundle["cfg"]
 
     if output_path:
@@ -597,8 +620,9 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--save-every", type=int, default=10)
+    ap.add_argument("--allow-cpu", action="store_true")
     args = ap.parse_args()
-    run_training(args.config, args.run_name, args.dataset, args.output, args.beta, args.max_examples, args.smoke, args.resume, args.save_every)
+    run_training(args.config, args.run_name, args.dataset, args.output, args.beta, args.max_examples, args.smoke, args.resume, args.save_every, args.allow_cpu)
 
 
 if __name__ == "__main__":

@@ -138,6 +138,8 @@ python -m task1_dpo.analyze_length --config configs/dpo.yaml --smoke
 
 Evaluation writes `eval_metrics.json`, `pairs.jsonl` and `generations.jsonl` (or `stratified_metrics.json` and `stratified_pairs.jsonl` for `--eval-set length`) to `results/task1_dpo/<name>/`.
 
+Full (non-smoke) runs stop early with a message if there is no GPU, a data file is missing, or the adapter is not found; `--allow-cpu` on `train` and `evaluate` overrides the GPU check.
+
 `--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are dropped for every run (after the `--max-examples` slice, never topped back up); the dropped `prompt_id`s and counts are written to `results/task1_dpo/filtered_examples.json`.
 
 ### Task 2 - PPO

@@ -20,11 +20,14 @@ def run_module(module, args, smoke):
     #flush so this line lands before the child process output in a notebook
     print("\n--- " + " ".join(command) + " ---", flush=True)
 
-    subprocess.run(
+    result= subprocess.run(
         command,
-        cwd=str(repo_path(".")),
-        check=True
+        cwd=str(repo_path("."))
     )
+
+    #the child already printed its own error, stop here without a second traceback
+    if result.returncode != 0:
+        raise SystemExit(f"{module} failed (exit code {result.returncode}), stopping.")
 
 
 def evaluate_once(config_path, cfg, name, adapter, eval_set, smoke):

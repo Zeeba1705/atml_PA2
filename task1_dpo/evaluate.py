@@ -16,6 +16,7 @@ from task1_dpo.dpo import dpo_loss
 from task1_dpo.train import (
     SMOKE_EXAMPLES,
     adjust_config,
+    check_setup,
     filter_long_prompts,
     make_collate,
     reference_logps,
@@ -26,7 +27,7 @@ from task1_dpo.train import (
 STRATA= ["preferred_longer", "length_matched", "rejected_longer"]
 
 
-def load_evaluation_bundle(config_path: str, adapter: str | None, eval_set: str = "standard", smoke: bool = False, max_examples: int | None = None):
+def load_evaluation_bundle(config_path: str, adapter: str | None, eval_set: str = "standard", smoke: bool = False, max_examples: int | None = None, allow_cpu: bool = False):
     cfg = adjust_config(load_yaml(config_path), smoke)
 
     if smoke and max_examples is None:
@@ -37,6 +38,18 @@ def load_evaluation_bundle(config_path: str, adapter: str | None, eval_set: str 
 
     if eval_set == "length":
         dataset_path= cfg["paths"]["dpo_length_eval"]
+
+    check_setup(
+        [dataset_path, cfg["paths"]["word_limit_prompts"]],
+        smoke,
+        allow_cpu
+    )
+
+    if adapter is not None and not (repo_path(adapter) / "adapter_config.json").exists():
+        raise SystemExit(
+            f"No adapter at {adapter}. Train that run first, "
+            "and on Colab check that Drive is mounted and linked (section 4)."
+        )
 
     rows= read_jsonl(dataset_path)
 
@@ -268,7 +281,7 @@ def summarize_generations(records):
     return out
 
 
-def run_evaluation(config_path: str, adapter: str | None, name: str, eval_set: str = "standard", beta: float | None = None, smoke: bool = False, max_examples: int | None = None, gen_batch_size: int = 4, word_limit_samples: int = 5):
+def run_evaluation(config_path: str, adapter: str | None, name: str, eval_set: str = "standard", beta: float | None = None, smoke: bool = False, max_examples: int | None = None, gen_batch_size: int = 4, word_limit_samples: int = 5, allow_cpu: bool = False):
     if max_examples is not None and not smoke and not name.startswith("quicktest"):
         raise SystemExit(
             "--max-examples gives partial metrics. "
@@ -282,7 +295,8 @@ def run_evaluation(config_path: str, adapter: str | None, name: str, eval_set: s
         adapter,
         eval_set,
         smoke,
-        max_examples
+        max_examples,
+        allow_cpu
     )
 
     cfg= bundle["cfg"]
@@ -486,8 +500,9 @@ def main():
     ap.add_argument("--gen-batch-size", type=int, default=4)
     ap.add_argument("--word-limit-samples", type=int, default=5)
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--allow-cpu", action="store_true")
     args = ap.parse_args()
-    run_evaluation(args.config, args.adapter, args.name, args.eval_set, args.beta, args.smoke, args.max_examples, args.gen_batch_size, args.word_limit_samples)
+    run_evaluation(args.config, args.adapter, args.name, args.eval_set, args.beta, args.smoke, args.max_examples, args.gen_batch_size, args.word_limit_samples, args.allow_cpu)
 
 
 if __name__ == "__main__":
