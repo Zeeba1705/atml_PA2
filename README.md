@@ -166,6 +166,20 @@ python -m task2_ppo.continue_train --config configs/ppo.yaml --run-name standard
 python -m task2_ppo.continue_train --config configs/ppo.yaml --run-name standard --resume
 ```
 
+Evaluation commands (same held-out prompts, seed, batch size and decoding for every policy):
+
+```bash
+# smoke: 3 prompts, 24 response tokens, base policy
+python -m task2_ppo.evaluate --config configs/ppo.yaml --name sft --smoke
+
+# untouched base policy, supplied midpoint, standard continuation
+python -m task2_ppo.evaluate --config configs/ppo.yaml --name sft
+python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter checkpoints/ppo_midpoint_policy --name midpoint
+python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task2_ppo/standard --name standard
+```
+
+`evaluate` samples one response per prompt in `data/rl_prompt_pool_eval.jsonl` with `eval_max_response_length` and writes `results/task2_ppo/<name>/eval_metrics.json` and `generations.jsonl`. Without `--adapter` it evaluates the base policy. Every headline metric has a 95% bootstrap interval (2000 resamples of prompts, config seed); token-level means (KL, entropy) are resampled as a sum over tokens divided by the token count. `generations.jsonl` keeps the per-prompt sums so paired comparisons between runs need no regeneration.
+
 Each update samples `prompts_per_update` prompts from a seeded order of `data/rl_prompt_pool_train.jsonl` (the same sequence for every fork), runs `ppo_epochs` optimisation steps on that rollout, appends one line to `results/task2_ppo/<run_name>/train_log.jsonl` and the sampled response to `rollouts.jsonl`, and saves a checkpoint to `outputs/task2_ppo/<run_name>/checkpoints/`. `--resume` continues from the latest checkpoint and starts from the midpoint when there is none.
 
 Choices that are not fixed by the handout:
