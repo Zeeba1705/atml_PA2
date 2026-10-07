@@ -238,7 +238,8 @@ def analyze_cached_batch(config_path: str, adapter: str | None, name: str, smoke
 
 
 def delta_kls(log_rows):
-    #change in kl from reference caused by each update, measured on that update's own rollout tokens
+    #sampled kl after minus before each update on that update's own rollout tokens
+    #the reference log-probs cancel, so this is the mean log ratio new/old: how far the update moved the policy
     if len(log_rows) == 0 or "delta_kl" not in log_rows[0]:
         raise SystemExit(
             "this train_log.jsonl has no delta_kl. It was written before the post-update kl was logged, "
@@ -278,7 +279,7 @@ def stability_threshold(cfg):
     save_json(path, {
         "threshold": threshold,
         "definition": "3 x median |delta_kl| over the updates of the standard run",
-        "delta_kl": "kl from reference after the update minus before it, on the same rollout tokens",
+        "delta_kl": "sampled kl estimate after the update minus before it, on the same rollout tokens. the reference term cancels, so this is the mean change in log-prob of the sampled tokens: a measure of how far the update moved the policy on its own rollout, not a fresh estimate of kl from the reference",
         "source": str(log_path),
         "n_updates": len(deltas),
         "git_commit": git_commit(),

@@ -197,7 +197,7 @@ python -m task2_ppo.analyze_clipping --config configs/ppo.yaml --part forks
 
 `--part forks` needs the finished standard run. It writes `results/task2_ppo/clipping_forks.json` with the held-out reward, KL and length of each fork and two stability statistics, fixed before any fork was run:
 
-- `delta_kl` of an update is the KL from the reference after the update minus before it, measured on that update's own rollout tokens.
+- `delta_kl` of an update is the sampled KL estimate after the update minus before it, on that update's own rollout tokens. The reference log-probs cancel in that difference, so `delta_kl` equals the mean change in log-prob of the sampled tokens (the mean log ratio new/old). It measures how far one update moved the policy on its own rollout; it is not a fresh estimate of the KL from the reference, because the tokens were sampled before the update.
 - S1 is the population standard deviation of `delta_kl` over the fork's updates.
 - S2 is the number of updates with `|delta_kl|` above a threshold of 3 x the median `|delta_kl|` of the standard 20-update run. The threshold is computed once and stored in `results/task2_ppo/stability_threshold.json`.
 

@@ -604,7 +604,8 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             ratio_devs.append(max_ratio_dev)
             update_retries += retries
 
-        #same tokens scored again after the update, so the change in kl is caused by this update alone
+        #same tokens scored again after the update. the tokens were sampled before the update, so
+        #kl_after - kl is the mean log ratio new/old on them (policy movement), not a fresh kl estimate
         with torch.no_grad():
             after_logp, _ = response_token_logprobs(
                 policy,
