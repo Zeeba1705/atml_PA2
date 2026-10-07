@@ -1,0 +1,21 @@
+{
+  "git_commit": "825814874b3be3f90993e26e680fef4003136803",
+  "seed": 6304,
+  "beta": 0.1,
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "dataset": "data/dpo_standard_train.jsonl",
+  "n_examples": 1446,
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "run_name": "standard",
+  "n_examples_loaded": 1500,
+  "n_skipped_long_prompt": 54,
+  "max_examples": null,
+  "smoke": false,
+  "optimizer_steps": 91,
+  "skipped_optimizer_steps": 1,
+  "final_step_train_loss": 0.6584012508392334,
+  "wall_clock_sec": 1051.667806861,
+  "peak_vram_bytes": 7148211200,
+  "adapter": "/content/atml_PA2/outputs/task1_dpo/standard"
+}

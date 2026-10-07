@@ -1,0 +1,59 @@
+{
+  "git_commit": "2efeaaa5ef61a0f06e168b750e098f9029b7af73",
+  "seed": 6304,
+  "beta": 0.1,
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "dataset": "data/dpo_length_stratified_eval.jsonl",
+  "n_examples": 237,
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "run_name": "reference",
+  "adapter": null,
+  "eval_set": "length",
+  "beta_source": "config",
+  "n_examples_loaded": 246,
+  "smoke": false,
+  "train_examples": null,
+  "train_optimizer_steps": null,
+  "train_dataset": null,
+  "pairs": {
+    "n_pairs": 237,
+    "dpo_loss": 0.6931471824645996,
+    "dpo_loss_at_config_beta": 0.6931471824645996,
+    "preference_accuracy": 0.0,
+    "raw_preference_accuracy": 0.5654008388519287,
+    "margin_mean": 0.0,
+    "margin_std": 0.0
+  },
+  "by_stratum": {
+    "preferred_longer": {
+      "n_pairs": 78,
+      "dpo_loss": 0.6931471228599548,
+      "dpo_loss_at_config_beta": 0.6931471228599548,
+      "preference_accuracy": 0.0,
+      "raw_preference_accuracy": 0.12820513546466827,
+      "margin_mean": 0.0,
+      "margin_std": 0.0
+    },
+    "length_matched": {
+      "n_pairs": 80,
+      "dpo_loss": 0.6931472420692444,
+      "dpo_loss_at_config_beta": 0.6931472420692444,
+      "preference_accuracy": 0.0,
+      "raw_preference_accuracy": 0.6000000238418579,
+      "margin_mean": 0.0,
+      "margin_std": 0.0
+    },
+    "rejected_longer": {
+      "n_pairs": 79,
+      "dpo_loss": 0.6931471228599548,
+      "dpo_loss_at_config_beta": 0.6931471228599548,
+      "preference_accuracy": 0.0,
+      "raw_preference_accuracy": 0.9620253443717957,
+      "margin_mean": 0.0,
+      "margin_std": 0.0
+    }
+  },
+  "peak_vram_bytes": 5432082944,
+  "wall_clock_sec": 47.85284723699988
+}

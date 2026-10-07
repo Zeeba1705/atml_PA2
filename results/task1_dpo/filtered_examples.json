@@ -1,0 +1,999 @@
+{
+  "data/dpo_standard_train.jsonl (first 32 rows)": {
+    "dataset": "data/dpo_standard_train.jsonl",
+    "rows_loaded": 32,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 29,
+    "n_dropped": 3,
+    "dropped": [
+      {
+        "row_index": 2,
+        "prompt_id": "e14d5ba9f8d00a203e7cc3e044f3d3bc4ad429024898c59e0c6a1009e7fb1f18",
+        "source_index": 49298,
+        "length_stratum": null
+      },
+      {
+        "row_index": 9,
+        "prompt_id": "6f58a8714956c4ece492f013f93cf719484852f1e355ede1b79f028807938111",
+        "source_index": 27947,
+        "length_stratum": null
+      },
+      {
+        "row_index": 26,
+        "prompt_id": "fabe7f39d9890f3d945db8c8e1f787db76cfd9b4cbdfcbb796e5a1f9c601a0af",
+        "source_index": 23779,
+        "length_stratum": null
+      }
+    ]
+  },
+  "data/dpo_standard_train.jsonl (first 1500 rows)": {
+    "dataset": "data/dpo_standard_train.jsonl",
+    "rows_loaded": 1500,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 1446,
+    "n_dropped": 54,
+    "dropped": [
+      {
+        "row_index": 2,
+        "prompt_id": "e14d5ba9f8d00a203e7cc3e044f3d3bc4ad429024898c59e0c6a1009e7fb1f18",
+        "source_index": 49298,
+        "length_stratum": null
+      },
+      {
+        "row_index": 9,
+        "prompt_id": "6f58a8714956c4ece492f013f93cf719484852f1e355ede1b79f028807938111",
+        "source_index": 27947,
+        "length_stratum": null
+      },
+      {
+        "row_index": 26,
+        "prompt_id": "fabe7f39d9890f3d945db8c8e1f787db76cfd9b4cbdfcbb796e5a1f9c601a0af",
+        "source_index": 23779,
+        "length_stratum": null
+      },
+      {
+        "row_index": 74,
+        "prompt_id": "aa966c9d7b809f8f8e3c764ef0ad940564dc584114e6704032ee4f14c18ef6e7",
+        "source_index": 5590,
+        "length_stratum": null
+      },
+      {
+        "row_index": 92,
+        "prompt_id": "f3d1abc1c0e79f0f3546b36f4c3fa8120c325521cbc9df0ce8b41a6928c0c72d",
+        "source_index": 9923,
+        "length_stratum": null
+      },
+      {
+        "row_index": 158,
+        "prompt_id": "948459d65639035efa182add73e52307c4df90a887e9a9026a8aeef3794f2d07",
+        "source_index": 48643,
+        "length_stratum": null
+      },
+      {
+        "row_index": 199,
+        "prompt_id": "74369a60a79703e9e0dced866e6683d01c3338103e40a00d6d9eb0cc49a40121",
+        "source_index": 42464,
+        "length_stratum": null
+      },
+      {
+        "row_index": 228,
+        "prompt_id": "8f1ec2cf1f76779c7ab4962998cf8792b50c6e93fe09b15eea7195ea13c0c803",
+        "source_index": 24649,
+        "length_stratum": null
+      },
+      {
+        "row_index": 265,
+        "prompt_id": "f5d6669a7c077c4c7f49833ed50befc3490747825303722b7c809b71c6fb4652",
+        "source_index": 59934,
+        "length_stratum": null
+      },
+      {
+        "row_index": 271,
+        "prompt_id": "e1dca4044ab27e45f64b5b58c6bfd84642f2dfe0c4f295fa9e7be195c437161d",
+        "source_index": 30741,
+        "length_stratum": null
+      },
+      {
+        "row_index": 315,
+        "prompt_id": "e5774276d496b7f1cbed667c35a2af85f515fc702d2147dad7d84c448c41ec12",
+        "source_index": 39829,
+        "length_stratum": null
+      },
+      {
+        "row_index": 325,
+        "prompt_id": "0fa6c81ef0c6275141c14569d677fc68111afc00b606873124271ac601d32f8b",
+        "source_index": 56570,
+        "length_stratum": null
+      },
+      {
+        "row_index": 434,
+        "prompt_id": "18732a153d984c2e5a027e18fa1cbeb61b99a9fe6e8aa2ff0e940d2e5ea86a72",
+        "source_index": 53658,
+        "length_stratum": null
+      },
+      {
+        "row_index": 437,
+        "prompt_id": "86a6ee192999e46ac0f041385e97cb8176b28e70e0e5b4a47b01d26fee682df8",
+        "source_index": 23662,
+        "length_stratum": null
+      },
+      {
+        "row_index": 486,
+        "prompt_id": "d348ab35c2625f30ab9f5a2b850efe786e499adf6aa0db34016962a1462a79f2",
+        "source_index": 7326,
+        "length_stratum": null
+      },
+      {
+        "row_index": 507,
+        "prompt_id": "85e0488323a28fca22a662a56ac4fa0056aaf6ed89051187ecaa9717e48b7cc6",
+        "source_index": 29083,
+        "length_stratum": null
+      },
+      {
+        "row_index": 514,
+        "prompt_id": "2c0f592d7c48443fa4ca815c2a110177e107f37b7449112f980aa30c3a03b21c",
+        "source_index": 15390,
+        "length_stratum": null
+      },
+      {
+        "row_index": 521,
+        "prompt_id": "82eeff0265dffcb6fb802f377911c568bc153001573dbcb7b8cffd867d947958",
+        "source_index": 10267,
+        "length_stratum": null
+      },
+      {
+        "row_index": 554,
+        "prompt_id": "c45d3fc36d3c0ec001b926e5bf9a284f0befc9dc25cda0316cbc8771fa1d578b",
+        "source_index": 11364,
+        "length_stratum": null
+      },
+      {
+        "row_index": 607,
+        "prompt_id": "1494b5ab1bebef6e237d4ac3cc23da8fc51cdddb68bdce5bdd59c95f61b265c4",
+        "source_index": 40666,
+        "length_stratum": null
+      },
+      {
+        "row_index": 620,
+        "prompt_id": "c929c4a06cebf2d7da342a36d2293d951141a03aa52a5e479cb4ce5a7a6647c0",
+        "source_index": 42316,
+        "length_stratum": null
+      },
+      {
+        "row_index": 636,
+        "prompt_id": "5de78320007d8decdba7b027c73ae1556291a0b30258f797e72b2a42c28e1ec1",
+        "source_index": 16259,
+        "length_stratum": null
+      },
+      {
+        "row_index": 649,
+        "prompt_id": "93bd6d585a932627313273d31611e33d9d2762610807b1f20d0f5294c02276ef",
+        "source_index": 57411,
+        "length_stratum": null
+      },
+      {
+        "row_index": 686,
+        "prompt_id": "0ce4f4204c52bf0c42eb94d20e1e23cd11749879694b1276061db9d064abb211",
+        "source_index": 48041,
+        "length_stratum": null
+      },
+      {
+        "row_index": 727,
+        "prompt_id": "6c3949ffcd8936dc52b97195525f03ccddd163c58a9f350941e369bafbfab997",
+        "source_index": 30587,
+        "length_stratum": null
+      },
+      {
+        "row_index": 781,
+        "prompt_id": "34067e17c482f7d10d6773608bdb1df349787ebba50b3671547b509de06314a1",
+        "source_index": 56730,
+        "length_stratum": null
+      },
+      {
+        "row_index": 783,
+        "prompt_id": "85ccce766b55ab70893247ed17691396676d9b9c1edb95923a32693811ddde17",
+        "source_index": 55440,
+        "length_stratum": null
+      },
+      {
+        "row_index": 830,
+        "prompt_id": "ab99e2272140bb8792144cbeac8f7d22f2a244b1df531ce771f595f54451ce90",
+        "source_index": 54740,
+        "length_stratum": null
+      },
+      {
+        "row_index": 843,
+        "prompt_id": "eba0b41aaa0d69528ead7f4095f7d248230e2810ce5ad61c8fe68f6d23b69ad9",
+        "source_index": 57206,
+        "length_stratum": null
+      },
+      {
+        "row_index": 863,
+        "prompt_id": "ffb068ae64572af0205040788dabe365b71111f78867e3b4813d3d544ccc0d9d",
+        "source_index": 60510,
+        "length_stratum": null
+      },
+      {
+        "row_index": 865,
+        "prompt_id": "2854ae82fdfe786491cad45692a527a733cd96780ee9e833fc44223de4cbe681",
+        "source_index": 30622,
+        "length_stratum": null
+      },
+      {
+        "row_index": 877,
+        "prompt_id": "f082e6eee4ea45d307e10e0ea6f74cf12383159958a3080048b4da2a2b9a7409",
+        "source_index": 16512,
+        "length_stratum": null
+      },
+      {
+        "row_index": 993,
+        "prompt_id": "ceedb22f3aa14e56a706a32562cb27e5b647fc3c90f65e98441b9fe55e927781",
+        "source_index": 60848,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1004,
+        "prompt_id": "e009ee4d859a4168b114805141c1d00810f90f8b5349e0465278f9a78385a419",
+        "source_index": 59155,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1008,
+        "prompt_id": "d4d2dde3bcd52ec630edd1f46991af2423943e2b5171a6ae43835516485e7fcb",
+        "source_index": 36356,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1071,
+        "prompt_id": "a16a92e502b4b9502fc1e59bec839bb1cdbd4a9d1e82cbecd006ec73c9a95763",
+        "source_index": 55722,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1077,
+        "prompt_id": "a1193a9b1a4081517ae2e587d2ef082cf15f954af93a94322db5890eb5c92739",
+        "source_index": 24511,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1093,
+        "prompt_id": "8b312f381b766e5a7cbd6410c0e9a4ce51da8561722c0eaad6a82cb6d2427ee1",
+        "source_index": 8424,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1109,
+        "prompt_id": "67c7cce8d414d55f40e27f016fce36e92323350b3cabb9c13b389db476c377c2",
+        "source_index": 13876,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1165,
+        "prompt_id": "0abaa82eeb03f242a8cba006667e22924d3bae55956cd80b960dbce0361426f3",
+        "source_index": 24406,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1166,
+        "prompt_id": "3b88a8e7afb03130a8546b743c2d44073badecf7228315b7fae5c9b3f91d234d",
+        "source_index": 47659,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1176,
+        "prompt_id": "8cb1cdee5515224ec3b70fa59b61fa7e84fdb9889eaaf70544e841aeb3bebff2",
+        "source_index": 51052,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1197,
+        "prompt_id": "451fb936c29ea6c143abf1aff89f9cba255d5887cba65fcc9e58366e98565b71",
+        "source_index": 1689,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1224,
+        "prompt_id": "107261962ae3bf43b814d4355f0f5ca4ab0bb4b86ec995cc33e6f67becabdbf1",
+        "source_index": 32743,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1226,
+        "prompt_id": "93f3d969eb16a6ce722eb0627a93c376fbb031adfe9f1e6b1cdc5e87fd3a0db5",
+        "source_index": 33184,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1239,
+        "prompt_id": "31993842da19871db88d6fae9d424132b340c765297202d8c9e18b0b8159f536",
+        "source_index": 49285,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1241,
+        "prompt_id": "8a7ae286c513cddf134f7ab11fefff3abbda5a01277b87c9cfbe7e9e740b02f7",
+        "source_index": 29139,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1281,
+        "prompt_id": "39e8b8d4aacb32e4331df3d7c0112e1eab2836af8a3bb740dc89863c1fc4e0c6",
+        "source_index": 45722,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1332,
+        "prompt_id": "528082e49c856bf11d998a627ba70e919e824d9bed220b89c67d6ea4b0f58d58",
+        "source_index": 53393,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1383,
+        "prompt_id": "96d0e64581d60b3b7d2ad8330ea32bf0c55bba313c8e0d7347f690345ac4553b",
+        "source_index": 20453,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1407,
+        "prompt_id": "d83214eea245e565b679dbdee8f463583eadebf86e2f27ca9c540033a196e142",
+        "source_index": 32480,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1442,
+        "prompt_id": "be7b02b51a372db1fc3b0ab69d05418e0e4dbc5bc34e2562e27fe0d0b76756b8",
+        "source_index": 22795,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1458,
+        "prompt_id": "d4160e5db8fcd014a813ab1230f19b008ba3934ea722449809d1fd4c291e78bd",
+        "source_index": 33771,
+        "length_stratum": null
+      },
+      {
+        "row_index": 1468,
+        "prompt_id": "4805efe054b9aec481c76f9369fb43a099028c1c144aa9e58618890b238e15fd",
+        "source_index": 13826,
+        "length_stratum": null
+      }
+    ]
+  },
+  "data/dpo_standard_eval.jsonl (first 8 rows)": {
+    "dataset": "data/dpo_standard_eval.jsonl",
+    "rows_loaded": 8,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 8,
+    "n_dropped": 0,
+    "dropped": []
+  },
+  "data/dpo_standard_eval.jsonl (first 300 rows)": {
+    "dataset": "data/dpo_standard_eval.jsonl",
+    "rows_loaded": 300,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 290,
+    "n_dropped": 10,
+    "dropped": [
+      {
+        "row_index": 32,
+        "prompt_id": "99a843a7d5621de7f5660c5de46249dc47af2796ad9e8e81a4e11ca699ab2748",
+        "source_index": 1847,
+        "length_stratum": null
+      },
+      {
+        "row_index": 60,
+        "prompt_id": "f8603e835872e1c804ef8544b8a345f7bb4ff0925b11d3da1d6648cb045fbade",
+        "source_index": 144,
+        "length_stratum": null
+      },
+      {
+        "row_index": 71,
+        "prompt_id": "175ce5926626b171f863baf48b4337e2a17a5fcbf04b571e1e0612c7bd12d365",
+        "source_index": 1474,
+        "length_stratum": null
+      },
+      {
+        "row_index": 103,
+        "prompt_id": "fb2604c2ddf9bd32e3c8024fa9231c380053d0879e36fcb2a65f210d7ae850e3",
+        "source_index": 1720,
+        "length_stratum": null
+      },
+      {
+        "row_index": 174,
+        "prompt_id": "8ae54306663e1244ce441e11a1a615c75f0642e703802706ec13a596bec9fd9a",
+        "source_index": 1269,
+        "length_stratum": null
+      },
+      {
+        "row_index": 184,
+        "prompt_id": "f32980bf904020cd42532d2c16795204fd4edff4db3567e207bb8e23b26c1d52",
+        "source_index": 1172,
+        "length_stratum": null
+      },
+      {
+        "row_index": 239,
+        "prompt_id": "d7baf0d12770c7c089820ef841ca71a51f8ed5f9138ac00ab318f5c6b044ae4f",
+        "source_index": 1135,
+        "length_stratum": null
+      },
+      {
+        "row_index": 240,
+        "prompt_id": "8199434086917005eb12e429e46039f7c298eaa5f27f5c344e336ac7f06cb904",
+        "source_index": 1937,
+        "length_stratum": null
+      },
+      {
+        "row_index": 254,
+        "prompt_id": "6f0d9a5c3f6b412c13c065f75b30d4341e88b6ebe13859cd28ce373db6e41f36",
+        "source_index": 976,
+        "length_stratum": null
+      },
+      {
+        "row_index": 284,
+        "prompt_id": "2708b4a670f35fd3c1065f430d700cfe7cb2d20aeaa3ba7214e3cb411d132648",
+        "source_index": 1689,
+        "length_stratum": null
+      }
+    ]
+  },
+  "data/dpo_length_balanced_train.jsonl (first 1500 rows)": {
+    "dataset": "data/dpo_length_balanced_train.jsonl",
+    "rows_loaded": 1500,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 1442,
+    "n_dropped": 58,
+    "dropped": [
+      {
+        "row_index": 3,
+        "prompt_id": "925d63ef5e768a4464cb10cb3219206b7e85ac801a3b8da5188134d8c29e299f",
+        "source_index": 22510,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 10,
+        "prompt_id": "e31bacafffcf47510edf9dc3fbf1700098c34099d14a967c1c47b578f64c9ac3",
+        "source_index": 5127,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 32,
+        "prompt_id": "8d025f79f8836d93446aa526b2ed420caef184ae0871252880d1af4d8735d55d",
+        "source_index": 51248,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 35,
+        "prompt_id": "495e3e4004c4d2c20dddda3ed48cadb62ffe74d1e8c47d61a26b0c2e0ed9fdab",
+        "source_index": 33885,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 44,
+        "prompt_id": "6da374eefd3e67a635a60ebd1bdfb99335854c3f6cf8b1ff243c21a88fbf9632",
+        "source_index": 13478,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 62,
+        "prompt_id": "6aade7ad56c3abdfac691139ae6e7f155c1e4d09700cab41506280f41fb11010",
+        "source_index": 24296,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 95,
+        "prompt_id": "d44eb90eda6deaa5a1ce8d0e6ab9e5eee8c39c54dbbdf31026e7409868b6e033",
+        "source_index": 20031,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 100,
+        "prompt_id": "10a449980afbcb4eef350bd92810de39beb58b592e504f1071efc152fbcda408",
+        "source_index": 28714,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 142,
+        "prompt_id": "d6a23eb601ac319b2cee3f05ec92a23007bd9265fc32c34c1464f7238f992a19",
+        "source_index": 24255,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 169,
+        "prompt_id": "727c538cd00ceeeaa531214bb42f6a5f6a4b8c8092d22e69ab4d4624e2b2b968",
+        "source_index": 29350,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 172,
+        "prompt_id": "a08d37199bbfbacc3307b38bd2a453a2b1c3c24bfffce0d9a5893cf89a5adb05",
+        "source_index": 35502,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 188,
+        "prompt_id": "c7177b8fb06655afe10b5a9268571cb6558b049337ebdb4267b2d0e325a20e3a",
+        "source_index": 50747,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 189,
+        "prompt_id": "4ca4630d9560faa64d82dcf77c5cae025deb6fe79f7348751484f7ea3a056524",
+        "source_index": 40104,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 191,
+        "prompt_id": "c36d237a03680ef6bf986914a9056c1cd0b92aec05916d36ae706cf3f36693d0",
+        "source_index": 22799,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 219,
+        "prompt_id": "43abd13b0013a1d696a1a02bdd1c5bc076567335596d8568f9e866e5af61c204",
+        "source_index": 895,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 224,
+        "prompt_id": "a19ee3d098e0b7cc25347b59a318db08e4628aef0bd20ef586fb1b9c51d24619",
+        "source_index": 3808,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 255,
+        "prompt_id": "d728739a53993fcf383de7b65293a6cc10913e99c850fd68213b4a69274a213e",
+        "source_index": 7240,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 325,
+        "prompt_id": "0fac501cfade7b731dbd3cf66c72c43335f48cc35939e6ca6737ac7666c3c4d0",
+        "source_index": 57586,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 374,
+        "prompt_id": "b755671b0614aec88e71bf810950a718939e27224f4149d8b34bc93a6e672937",
+        "source_index": 59301,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 382,
+        "prompt_id": "f0c4ae0e37f178a10ad16e7a587a986778d03331b485d09633e2bbc62d1005b3",
+        "source_index": 25072,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 385,
+        "prompt_id": "6a24b06a364da06a9f8e7d53913193d83c993c12b8a2581628ae1a9ae7eb3209",
+        "source_index": 21196,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 526,
+        "prompt_id": "d02338794a85eee6134c06d96e9756c42fdc5dca571bda9d99840e834bdbe719",
+        "source_index": 47947,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 541,
+        "prompt_id": "fe3dd66131b4832ded2be20009d8fc2e7e2ada769c1b00ee22d6ea9fdf28307c",
+        "source_index": 60023,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 555,
+        "prompt_id": "27a529f015642133753eb3090b9d21313abfe895d0f1bfd3fa4d28964107e2b3",
+        "source_index": 50150,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 557,
+        "prompt_id": "0589fd4c7512918b44dc045051e39fe9417db7a0bdad7c4c22a6d88d63b305e1",
+        "source_index": 59827,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 571,
+        "prompt_id": "f94abaa0af7530fae9d57d836fa176442396699436c5e3149fa2993efe851d95",
+        "source_index": 1510,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 593,
+        "prompt_id": "0e8192bde38bf2eddf0faf919bd6bcfa4afda444eb8b2a162b6e1d0f0bc760b3",
+        "source_index": 43546,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 611,
+        "prompt_id": "5700a8a5b2c7ec3207422268008b7b1e4c793fbe79cb840f938e6a144c8c056b",
+        "source_index": 58678,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 625,
+        "prompt_id": "03838c58e2fd2786505b9b04988f7d8fe974bec3300fe265cfd85f25f9951f30",
+        "source_index": 6066,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 631,
+        "prompt_id": "3190f77d77783fbf51808bfb504116869816d43a372b86ee8e96354b13fac1b2",
+        "source_index": 24990,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 749,
+        "prompt_id": "cdcc642d60356e03cc0e41298a3d72d6a525392a41749cd00c27c5bfed55893d",
+        "source_index": 5870,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 756,
+        "prompt_id": "876cf75a984af4de705dd9026347d73f69d1332e1fd458ddb70be808576456c1",
+        "source_index": 24964,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 763,
+        "prompt_id": "874823465ee1eba7c040b2d7e2bbf1351fde3e204311631ea12506e46cdb9857",
+        "source_index": 56613,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 772,
+        "prompt_id": "50da2d1c02cc3f37605b319540a983927f2ad6a438f5405d9eaee9becc29676c",
+        "source_index": 16493,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 776,
+        "prompt_id": "650f29ba544dcf8b09b2f3808133bb7429f56b20beecd018fff42317d2dd2dee",
+        "source_index": 3584,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 854,
+        "prompt_id": "de63dd60c19fe817be92b409fb50d829382746d03573d893dd70da4c89631ebf",
+        "source_index": 47018,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 855,
+        "prompt_id": "afc435e01bd22bcd96eb3cbb196be2db23fb680dda63aa3c13ed7e33aceec678",
+        "source_index": 3446,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 871,
+        "prompt_id": "94b049b3b73c9a1af7e0d59f9deb1dc212d2196ac402407115b6d3d482c4efcb",
+        "source_index": 26416,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 915,
+        "prompt_id": "7b5cb6b2380519f7f914d5469ebf06cf41318d13cdcff187a81e5ffd4eb3c444",
+        "source_index": 58516,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 947,
+        "prompt_id": "77710d6ec56c66a2f87d79aacdda2dd89864f32a8c2e772d59a9b3ea6952151e",
+        "source_index": 54998,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 994,
+        "prompt_id": "530f250138c1569776efbd02f0c246f3f3e66131ae0741490de40204f09b1c53",
+        "source_index": 26141,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 997,
+        "prompt_id": "85e0488323a28fca22a662a56ac4fa0056aaf6ed89051187ecaa9717e48b7cc6",
+        "source_index": 29083,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1012,
+        "prompt_id": "96b9b53cb9d25dd85b7e4a340b3b59e0d87ec97f0500c4a648e270dee3adc30d",
+        "source_index": 5410,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1013,
+        "prompt_id": "7fa18c4e07d7c58336202012fa524f4b30b7b02286a679519c3231fcf22c8aa7",
+        "source_index": 2813,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1042,
+        "prompt_id": "7038e44ab8c6cfccf58b01c5e8d5911bd005387a4976fd3580109d29183daa9a",
+        "source_index": 18199,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1109,
+        "prompt_id": "123b3f6f2dafa1616d788cb2a62378b9df4e9e0889bbf29d8ac5898b26464d79",
+        "source_index": 34035,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 1147,
+        "prompt_id": "e5774276d496b7f1cbed667c35a2af85f515fc702d2147dad7d84c448c41ec12",
+        "source_index": 39829,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1178,
+        "prompt_id": "af7462bba2ea6a50c4be018fb5cef7758ca0b0ed2d33d60a783ff93ee79eeee5",
+        "source_index": 29836,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1182,
+        "prompt_id": "50facce44a7e20b318c3d3e26d7976d5d1469adce361bc0cd1ef4935d6a1d7fc",
+        "source_index": 36180,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 1222,
+        "prompt_id": "5387892b9e6c8b1b12517eecdf9ec319f251f1700a62a7fa917cf84fc75b696b",
+        "source_index": 32207,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1236,
+        "prompt_id": "34345cca03f5241eba6c11d0caa2934b396c3f52676c0c269820cd0f504ee798",
+        "source_index": 9370,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1330,
+        "prompt_id": "ae101c0bc4435f7759729daf488f238bec2cbdb2c3dc566094892230da111f7f",
+        "source_index": 9055,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1380,
+        "prompt_id": "a11d5226b8a6eb83439905a99ee562bb768b7eabdc3dbf8a9d96025ee196ee93",
+        "source_index": 49859,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 1390,
+        "prompt_id": "e657cd77f965cb657d50259024353df89c398986b0896880867f498670657c02",
+        "source_index": 8312,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1400,
+        "prompt_id": "e6effa13c0135010874cbb1d2ebe92ffd0b246be8a924beb0d44c706546e1eab",
+        "source_index": 58675,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1406,
+        "prompt_id": "413a3d292b50c3bd8449365cbfc2b5b72d9ba844f8e3510cb4098ab6f745383a",
+        "source_index": 40804,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 1407,
+        "prompt_id": "6b717c7f87823a262ebe31071797f8ae327bbee3bbaece49a0624cef61ea4c15",
+        "source_index": 52771,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 1473,
+        "prompt_id": "13b1c02a3713b855d8659139a9b44b19a428d537275f92f381bfafe0bad76dc1",
+        "source_index": 59105,
+        "length_stratum": "preferred_longer"
+      }
+    ],
+    "kept_per_stratum": {
+      "rejected_longer": 482,
+      "length_matched": 482,
+      "preferred_longer": 478
+    }
+  },
+  "data/dpo_standard_train.jsonl (first 600 rows)": {
+    "dataset": "data/dpo_standard_train.jsonl",
+    "rows_loaded": 600,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 581,
+    "n_dropped": 19,
+    "dropped": [
+      {
+        "row_index": 2,
+        "prompt_id": "e14d5ba9f8d00a203e7cc3e044f3d3bc4ad429024898c59e0c6a1009e7fb1f18",
+        "source_index": 49298,
+        "length_stratum": null
+      },
+      {
+        "row_index": 9,
+        "prompt_id": "6f58a8714956c4ece492f013f93cf719484852f1e355ede1b79f028807938111",
+        "source_index": 27947,
+        "length_stratum": null
+      },
+      {
+        "row_index": 26,
+        "prompt_id": "fabe7f39d9890f3d945db8c8e1f787db76cfd9b4cbdfcbb796e5a1f9c601a0af",
+        "source_index": 23779,
+        "length_stratum": null
+      },
+      {
+        "row_index": 74,
+        "prompt_id": "aa966c9d7b809f8f8e3c764ef0ad940564dc584114e6704032ee4f14c18ef6e7",
+        "source_index": 5590,
+        "length_stratum": null
+      },
+      {
+        "row_index": 92,
+        "prompt_id": "f3d1abc1c0e79f0f3546b36f4c3fa8120c325521cbc9df0ce8b41a6928c0c72d",
+        "source_index": 9923,
+        "length_stratum": null
+      },
+      {
+        "row_index": 158,
+        "prompt_id": "948459d65639035efa182add73e52307c4df90a887e9a9026a8aeef3794f2d07",
+        "source_index": 48643,
+        "length_stratum": null
+      },
+      {
+        "row_index": 199,
+        "prompt_id": "74369a60a79703e9e0dced866e6683d01c3338103e40a00d6d9eb0cc49a40121",
+        "source_index": 42464,
+        "length_stratum": null
+      },
+      {
+        "row_index": 228,
+        "prompt_id": "8f1ec2cf1f76779c7ab4962998cf8792b50c6e93fe09b15eea7195ea13c0c803",
+        "source_index": 24649,
+        "length_stratum": null
+      },
+      {
+        "row_index": 265,
+        "prompt_id": "f5d6669a7c077c4c7f49833ed50befc3490747825303722b7c809b71c6fb4652",
+        "source_index": 59934,
+        "length_stratum": null
+      },
+      {
+        "row_index": 271,
+        "prompt_id": "e1dca4044ab27e45f64b5b58c6bfd84642f2dfe0c4f295fa9e7be195c437161d",
+        "source_index": 30741,
+        "length_stratum": null
+      },
+      {
+        "row_index": 315,
+        "prompt_id": "e5774276d496b7f1cbed667c35a2af85f515fc702d2147dad7d84c448c41ec12",
+        "source_index": 39829,
+        "length_stratum": null
+      },
+      {
+        "row_index": 325,
+        "prompt_id": "0fa6c81ef0c6275141c14569d677fc68111afc00b606873124271ac601d32f8b",
+        "source_index": 56570,
+        "length_stratum": null
+      },
+      {
+        "row_index": 434,
+        "prompt_id": "18732a153d984c2e5a027e18fa1cbeb61b99a9fe6e8aa2ff0e940d2e5ea86a72",
+        "source_index": 53658,
+        "length_stratum": null
+      },
+      {
+        "row_index": 437,
+        "prompt_id": "86a6ee192999e46ac0f041385e97cb8176b28e70e0e5b4a47b01d26fee682df8",
+        "source_index": 23662,
+        "length_stratum": null
+      },
+      {
+        "row_index": 486,
+        "prompt_id": "d348ab35c2625f30ab9f5a2b850efe786e499adf6aa0db34016962a1462a79f2",
+        "source_index": 7326,
+        "length_stratum": null
+      },
+      {
+        "row_index": 507,
+        "prompt_id": "85e0488323a28fca22a662a56ac4fa0056aaf6ed89051187ecaa9717e48b7cc6",
+        "source_index": 29083,
+        "length_stratum": null
+      },
+      {
+        "row_index": 514,
+        "prompt_id": "2c0f592d7c48443fa4ca815c2a110177e107f37b7449112f980aa30c3a03b21c",
+        "source_index": 15390,
+        "length_stratum": null
+      },
+      {
+        "row_index": 521,
+        "prompt_id": "82eeff0265dffcb6fb802f377911c568bc153001573dbcb7b8cffd867d947958",
+        "source_index": 10267,
+        "length_stratum": null
+      },
+      {
+        "row_index": 554,
+        "prompt_id": "c45d3fc36d3c0ec001b926e5bf9a284f0befc9dc25cda0316cbc8771fa1d578b",
+        "source_index": 11364,
+        "length_stratum": null
+      }
+    ]
+  },
+  "data/dpo_length_stratified_eval.jsonl (first 246 rows)": {
+    "dataset": "data/dpo_length_stratified_eval.jsonl",
+    "rows_loaded": 246,
+    "max_sequence_length": 768,
+    "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_kept": 237,
+    "n_dropped": 9,
+    "dropped": [
+      {
+        "row_index": 6,
+        "prompt_id": "d620fb740ede53790a6b8f62c8ccce6e66a76fcaa5f20d40b7b2d5d2e00de601",
+        "source_index": 1540,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 7,
+        "prompt_id": "12a47c6d3dedbb86cff747adcb090026e4b772396f8d58ab6566768967813b0f",
+        "source_index": 452,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 20,
+        "prompt_id": "051f3b0ccdf871bda7148581d33714c35a0ba7481286651b563441a15c07c4d7",
+        "source_index": 558,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 22,
+        "prompt_id": "7642c1aa1c6e3f01760bfc976384e982cbbc181431258fff645215a30610b31b",
+        "source_index": 1957,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 57,
+        "prompt_id": "3dea54dc610518a8f1bc4f22ff64724f19f2ba409e188d55812b3d1c77abde40",
+        "source_index": 159,
+        "length_stratum": "preferred_longer"
+      },
+      {
+        "row_index": 76,
+        "prompt_id": "175ce5926626b171f863baf48b4337e2a17a5fcbf04b571e1e0612c7bd12d365",
+        "source_index": 1474,
+        "length_stratum": "length_matched"
+      },
+      {
+        "row_index": 82,
+        "prompt_id": "c1b62ad99f9cd90a4eaf69eb724e289ec436da787573f2a2e28ddc1df8e55d40",
+        "source_index": 600,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 144,
+        "prompt_id": "bcc6aa804c6dc0e303744ef3d1f598a4a6ed395c8ac6ef668c68262fd9adb6f5",
+        "source_index": 1580,
+        "length_stratum": "rejected_longer"
+      },
+      {
+        "row_index": 209,
+        "prompt_id": "fa62f47dce7fdd418f1fe400046cfad33992e25b0dc539b2215ad0fde27d5e95",
+        "source_index": 1962,
+        "length_stratum": "preferred_longer"
+      }
+    ],
+    "kept_per_stratum": {
+      "rejected_longer": 79,
+      "preferred_longer": 78,
+      "length_matched": 80
+    }
+  }
+}
