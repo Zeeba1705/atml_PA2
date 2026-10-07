@@ -33,6 +33,7 @@ SMOKE_GRAD_ACCUM= 2
 SMOKE_GENERATION_TOKENS= 32
 SMOKE_ROOT= "outputs/smoke/task1_dpo"
 SMOKE_RESULTS= "results/smoke/task1_dpo"
+MAX_STEP_RETRIES= 10
 
 
 def adjust_config(cfg, smoke):
@@ -413,8 +414,11 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
     total_steps= math.ceil(len(batches) / grad_accum)
 
     #float16 gradients can underflow to zero, the scaler multiplies the loss up before backward
-    use_scaler= torch.cuda.is_available() and model_dtype(model) == "float16"
-    scaler= torch.amp.GradScaler("cuda", enabled=use_scaler)
+    scaler= torch.amp.GradScaler(
+        device.type,
+        enabled=torch.cuda.is_available() and model_dtype(model) == "float16"
+    )
+    use_scaler= scaler.is_enabled()
 
     #what must match for a checkpoint to belong to this run
     run_key= {
@@ -430,7 +434,8 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
     start_step= 0
     prev_elapsed= 0.0
     prev_peak= 0
-    n_skipped_steps= 0
+    n_retries= 0
+    n_steps_retried= 0
 
     if ckpt_dir is not None:
         state= torch.load(ckpt_dir / "trainer_state.pt", map_location=device)
@@ -456,7 +461,8 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
         start_step= state["step"]
         prev_elapsed= state["elapsed"]
         prev_peak= state["peak_vram"]
-        n_skipped_steps= state["n_skipped_steps"]
+        n_retries= state["n_retries"]
+        n_steps_retried= state["n_steps_retried"]
 
         #drop log lines written after this checkpoint, those steps are redone
         old_log= [r for r in read_jsonl(log_path) if r["step"] <= start_step]
@@ -488,52 +494,70 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
         #the last group of the epoch can hold fewer than grad_accum batches
         group= batches[step * grad_accum:(step + 1) * grad_accum]
 
-        losses= []
-        margins= []
-        accs= []
+        retries= 0
 
-        for idx in group:
-            chosen_batch, rejected_batch = collate([rows[i] for i in idx])
+        while True:
+            losses= []
+            margins= []
+            accs= []
 
-            pol_chosen, _, _ = response_sequence_logprobs(model, to_device(chosen_batch, device))
-            pol_rejected, _, _ = response_sequence_logprobs(model, to_device(rejected_batch, device))
+            for idx in group:
+                chosen_batch, rejected_batch = collate([rows[i] for i in idx])
 
-            ref_chosen= torch.tensor([ref["chosen"][str(i)] for i in idx], device=device)
-            ref_rejected= torch.tensor([ref["rejected"][str(i)] for i in idx], device=device)
+                pol_chosen, _, _ = response_sequence_logprobs(model, to_device(chosen_batch, device))
+                pol_rejected, _, _ = response_sequence_logprobs(model, to_device(rejected_batch, device))
 
-            loss, diag = dpo_loss(
-                pol_chosen,
-                pol_rejected,
-                ref_chosen,
-                ref_rejected,
-                beta
-            )
+                ref_chosen= torch.tensor([ref["chosen"][str(i)] for i in idx], device=device)
+                ref_rejected= torch.tensor([ref["rejected"][str(i)] for i in idx], device=device)
 
-            if not torch.isfinite(loss):
-                raise RuntimeError(f"non-finite loss at step {step + 1}, rows {idx}")
+                loss, diag = dpo_loss(
+                    pol_chosen,
+                    pol_rejected,
+                    ref_chosen,
+                    ref_rejected,
+                    beta
+                )
 
-            scaler.scale(loss / len(group)).backward()
+                if not torch.isfinite(loss):
+                    raise RuntimeError(f"non-finite loss at step {step + 1}, rows {idx}")
 
-            losses.append(loss.item())
-            margins.append(diag["logit_mean"].item() / beta)
-            accs.append(diag["preference_accuracy"].item())
+                scaler.scale(loss / len(group)).backward()
 
-        #back to the true gradient scale before clipping
-        scaler.unscale_(optimizer)
-        grad_norm= torch.nn.utils.clip_grad_norm_(params, max_grad_norm).item()
+                losses.append(loss.item())
+                margins.append(diag["logit_mean"].item() / beta)
+                accs.append(diag["preference_accuracy"].item())
 
-        step_skipped= not math.isfinite(grad_norm)
+            #back to the true gradient scale before clipping
+            scaler.unscale_(optimizer)
+            grad_norm= torch.nn.utils.clip_grad_norm_(params, max_grad_norm).item()
 
-        if step_skipped and not use_scaler:
-            raise RuntimeError(f"non-finite gradient at step {step + 1}")
+            if math.isfinite(grad_norm):
+                break
 
-        #with the scaler on, a step with inf/nan gradients is skipped and the scale is lowered
+            #inf/nan gradients= the scaled float16 backward overflowed
+            if not use_scaler:
+                raise RuntimeError(f"non-finite gradient at step {step + 1}")
+
+            if retries >= MAX_STEP_RETRIES:
+                raise RuntimeError(f"step {step + 1} still has non-finite gradients after {retries} retries")
+
+            #update() halves the scale because unscale_ saw the inf/nan, then the same batches are redone
+            #so every run applies every optimizer step, whatever its beta
+            scaler.update()
+            optimizer.zero_grad()
+
+            retries += 1
+
+            print(f"step {step + 1}: non-finite gradient, retry {retries} with scale {scaler.get_scale():.0f}")
+
         scaler.step(optimizer)
         scaler.update()
         optimizer.zero_grad()
 
-        if step_skipped:
-            n_skipped_steps += 1
+        n_retries += retries
+
+        if retries > 0:
+            n_steps_retried += 1
 
         step_loss= sum(losses) / len(losses)
         step_margin= sum(margins) / len(margins)
@@ -551,7 +575,8 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
             "reward_accuracy": step_acc,
             "lr": optimizer.param_groups[0]["lr"],
             "grad_norm": grad_norm,
-            "step_skipped": step_skipped,
+            "retries": retries,
+            "scaler_scale": scaler.get_scale(),
             "examples_seen": min((step + 1) * grad_accum * batch_size, len(order)),
             "elapsed_sec": elapsed,
         })
@@ -562,7 +587,7 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
             f"margin={step_margin:.4f}, "
             f"acc={step_acc:.4f}, "
             f"grad_norm={grad_norm:.4f}, "
-            f"skipped={step_skipped}, "
+            f"retries={retries}, "
             f"time={elapsed:.0f}s"
         )
 
@@ -581,7 +606,8 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
                     "step": step + 1,
                     "elapsed": elapsed,
                     "peak_vram": peak_vram,
-                    "n_skipped_steps": n_skipped_steps,
+                    "n_retries": n_retries,
+                    "n_steps_retried": n_steps_retried,
                     "run_key": run_key,
                 }
             )
@@ -597,7 +623,11 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
         peak_vram= max(prev_peak, torch.cuda.max_memory_allocated())
 
     info["optimizer_steps"]= total_steps
-    info["skipped_optimizer_steps"]= n_skipped_steps
+    #a step with non-finite gradients is redone at a lower scale, never skipped
+    info["nonfinite_gradient_policy"]= "retry"
+    info["skipped_optimizer_steps"]= 0
+    info["step_retries_total"]= n_retries
+    info["steps_with_retries"]= n_steps_retried
     info["final_step_train_loss"]= step_loss
     info["wall_clock_sec"]= prev_elapsed + timer()
     info["peak_vram_bytes"]= peak_vram

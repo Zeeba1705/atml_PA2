@@ -140,6 +140,8 @@ Evaluation writes `eval_metrics.json`, `pairs.jsonl` and `generations.jsonl` (or
 
 Full (non-smoke) runs stop early with a message if there is no GPU, a data file is missing, or the adapter is not found; `--allow-cpu` on `train` and `evaluate` overrides the GPU check.
 
+If an optimizer step produces non-finite gradients in float16, the gradient scale is halved and the same batches are redone, so no step is skipped; retries are logged per step in `train_log.jsonl` and totalled in `train_metrics.json`. The `standard` and `length_balanced` runs predate this and record their skipped steps instead; the first beta forks, which also skipped steps, are kept in `results/task1_dpo/_superseded/`.
+
 `--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are dropped for every run (after the `--max-examples` slice, never topped back up); the dropped `prompt_id`s and counts are written to `results/task1_dpo/filtered_examples.json`.
 
 ### Task 2 - PPO
