@@ -180,6 +180,29 @@ python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task2_p
 
 `evaluate` samples one response per prompt in `data/rl_prompt_pool_eval.jsonl` with `eval_max_response_length` and writes `results/task2_ppo/<name>/eval_metrics.json` and `generations.jsonl`. Without `--adapter` it evaluates the base policy. Every headline metric has a 95% bootstrap interval (2000 resamples of prompts, config seed); token-level means (KL, entropy) are resampled as a sum over tokens divided by the token count. `generations.jsonl` keeps the per-prompt sums so paired comparisons between runs need no regeneration.
 
+Clipping study:
+
+```bash
+# smoke (needs the course assets: cached rollout and prompt pools)
+python -m task2_ppo.analyze_clipping --config configs/ppo.yaml --smoke
+
+# cached batch only: clipped surrogate and clip fraction for each epsilon, no training
+python -m task2_ppo.analyze_clipping --config configs/ppo.yaml --part cached
+
+# matched 8-update forks clip_0.05, clip_0.2, clip_0.5 from the midpoint, each evaluated on the held-out prompts
+python -m task2_ppo.analyze_clipping --config configs/ppo.yaml --part forks
+```
+
+`--part cached` rebuilds the 32 cached rollouts from their text, scores them under the midpoint policy (and under `outputs/task2_ppo/standard` when it exists) and writes `results/task2_ppo/clipping_cached_<name>.json`. Advantages come from the cached values and rewards and are normalised once over the batch, so only epsilon changes. `clip_fraction` is the fraction of valid response tokens whose ratio is outside `[1-eps, 1+eps]` before clipping; `binding_fraction` is the fraction where the objective actually uses the clipped term.
+
+`--part forks` needs the finished standard run. It writes `results/task2_ppo/clipping_forks.json` with the held-out reward, KL and length of each fork and two stability statistics, fixed before any fork was run:
+
+- `delta_kl` of an update is the KL from the reference after the update minus before it, measured on that update's own rollout tokens.
+- S1 is the population standard deviation of `delta_kl` over the fork's updates.
+- S2 is the number of updates with `|delta_kl|` above a threshold of 3 x the median `|delta_kl|` of the standard 20-update run. The threshold is computed once and stored in `results/task2_ppo/stability_threshold.json`.
+
+Each update uses one prompt, so per-update values are noisy; all forks see the same prompt sequence. Forks that are already trained or evaluated are skipped, so the command is safe to rerun.
+
 Each update samples `prompts_per_update` prompts from a seeded order of `data/rl_prompt_pool_train.jsonl` (the same sequence for every fork), runs `ppo_epochs` optimisation steps on that rollout, appends one line to `results/task2_ppo/<run_name>/train_log.jsonl` and the sampled response to `rollouts.jsonl`, and saves a checkpoint to `outputs/task2_ppo/<run_name>/checkpoints/`. `--resume` continues from the latest checkpoint and starts from the midpoint when there is none.
 
 Choices that are not fixed by the handout:
