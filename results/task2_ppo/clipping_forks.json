@@ -1,0 +1,209 @@
+{
+  "git_commit": "cee7f724fb230e0198ae39aac30ea481f39a9244",
+  "seed": 6304,
+  "fork_updates": 8,
+  "prompts_per_update": 1,
+  "stability_threshold": 0.001106669835280627,
+  "s1": "population std over updates of delta_kl",
+  "s2": "number of updates with |delta_kl| above the stability threshold",
+  "note": "each update uses prompts_per_update prompt(s), so per-update values are noisy; all forks see the same prompt sequence",
+  "budget_note": "forks run 8 updates from the midpoint, the standard run has 20",
+  "smoke": false,
+  "forks": [
+    {
+      "run_name": "clip_0.05",
+      "clip_epsilon": 0.05,
+      "kl_beta": 0.1,
+      "updates": 8,
+      "generated_tokens_train": 2069,
+      "delta_kl": [
+        0.0001664711999183055,
+        -8.689894457347691e-06,
+        -3.329689207021147e-05,
+        0.0006215160829015076,
+        -0.0004409366083564237,
+        -9.49212844716385e-05,
+        -5.335407331585884e-05,
+        0.00151587842265144
+      ],
+      "train_clip_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "train_max_ratio_deviation": [
+        0.01730954647064209,
+        0.030727505683898926,
+        0.021728038787841797,
+        0.023193418979644775,
+        0.01903212070465088,
+        0.024234890937805176,
+        0.018407583236694336,
+        0.0069915056228637695
+      ],
+      "s1_std_delta_kl": 0.000566747458017607,
+      "s2_updates_above_threshold": 1,
+      "heldout_reward_mean": 1.525669479370117,
+      "heldout_reward_mean_ci95": [
+        1.3268745288848875,
+        1.7211767883300781
+      ],
+      "heldout_kl_token_mean": 1.1143008713133903e-06,
+      "heldout_kl_token_mean_ci95": [
+        -4.0818614862440355e-05,
+        4.4264190958623665e-05
+      ],
+      "heldout_kl_sequence_mean": 0.00032519199477974324,
+      "heldout_kl_sequence_mean_ci95": [
+        -0.011933284534927225,
+        0.012770560412172926
+      ],
+      "heldout_length_mean": 291.835,
+      "heldout_length_mean_ci95": [
+        258.199,
+        328.90562499999993
+      ],
+      "heldout_no_eos_fraction": 0.08,
+      "heldout_no_eos_fraction_ci95": [
+        0.045,
+        0.12
+      ],
+      "heldout_length_std": 245.45934037025359
+    },
+    {
+      "run_name": "clip_0.2",
+      "clip_epsilon": 0.2,
+      "kl_beta": 0.1,
+      "updates": 8,
+      "generated_tokens_train": 2069,
+      "delta_kl": [
+        0.0001664711999183055,
+        -8.689894457347691e-06,
+        -3.329689207021147e-05,
+        0.0006215160829015076,
+        -0.0004409366083564237,
+        -9.49212844716385e-05,
+        -5.335407331585884e-05,
+        0.00151587842265144
+      ],
+      "train_clip_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "train_max_ratio_deviation": [
+        0.01730954647064209,
+        0.030727505683898926,
+        0.021728038787841797,
+        0.023193418979644775,
+        0.01903212070465088,
+        0.024234890937805176,
+        0.018407583236694336,
+        0.0069915056228637695
+      ],
+      "s1_std_delta_kl": 0.000566747458017607,
+      "s2_updates_above_threshold": 1,
+      "heldout_reward_mean": 1.525669479370117,
+      "heldout_reward_mean_ci95": [
+        1.3268745288848875,
+        1.7211767883300781
+      ],
+      "heldout_kl_token_mean": 1.1143008713133903e-06,
+      "heldout_kl_token_mean_ci95": [
+        -4.0818614862440355e-05,
+        4.4264190958623665e-05
+      ],
+      "heldout_kl_sequence_mean": 0.00032519199477974324,
+      "heldout_kl_sequence_mean_ci95": [
+        -0.011933284534927225,
+        0.012770560412172926
+      ],
+      "heldout_length_mean": 291.835,
+      "heldout_length_mean_ci95": [
+        258.199,
+        328.90562499999993
+      ],
+      "heldout_no_eos_fraction": 0.08,
+      "heldout_no_eos_fraction_ci95": [
+        0.045,
+        0.12
+      ],
+      "heldout_length_std": 245.45934037025359
+    },
+    {
+      "run_name": "clip_0.5",
+      "clip_epsilon": 0.5,
+      "kl_beta": 0.1,
+      "updates": 8,
+      "generated_tokens_train": 2069,
+      "delta_kl": [
+        0.0001664711999183055,
+        -8.689894457347691e-06,
+        -3.329689207021147e-05,
+        0.0006215160829015076,
+        -0.0004409366083564237,
+        -9.49212844716385e-05,
+        -5.335407331585884e-05,
+        0.00151587842265144
+      ],
+      "train_clip_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "train_max_ratio_deviation": [
+        0.01730954647064209,
+        0.030727505683898926,
+        0.021728038787841797,
+        0.023193418979644775,
+        0.01903212070465088,
+        0.024234890937805176,
+        0.018407583236694336,
+        0.0069915056228637695
+      ],
+      "s1_std_delta_kl": 0.000566747458017607,
+      "s2_updates_above_threshold": 1,
+      "heldout_reward_mean": 1.525669479370117,
+      "heldout_reward_mean_ci95": [
+        1.3268745288848875,
+        1.7211767883300781
+      ],
+      "heldout_kl_token_mean": 1.1143008713133903e-06,
+      "heldout_kl_token_mean_ci95": [
+        -4.0818614862440355e-05,
+        4.4264190958623665e-05
+      ],
+      "heldout_kl_sequence_mean": 0.00032519199477974324,
+      "heldout_kl_sequence_mean_ci95": [
+        -0.011933284534927225,
+        0.012770560412172926
+      ],
+      "heldout_length_mean": 291.835,
+      "heldout_length_mean_ci95": [
+        258.199,
+        328.90562499999993
+      ],
+      "heldout_no_eos_fraction": 0.08,
+      "heldout_no_eos_fraction_ci95": [
+        0.045,
+        0.12
+      ],
+      "heldout_length_std": 245.45934037025359
+    }
+  ]
+}

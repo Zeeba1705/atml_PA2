@@ -1,0 +1,70 @@
+{
+  "git_commit": "124361975460fe6e7e710818cd477e353ac59f3b",
+  "name": "sft",
+  "adapter": null,
+  "seed": 6304,
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "dataset": "data/rl_prompt_pool_eval.jsonl",
+  "n_examples": 200,
+  "max_examples": null,
+  "gen_batch_size": 4,
+  "eval_max_response_length": 768,
+  "generation": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "do_sample": true
+  },
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "smoke": false,
+  "bootstrap": "95% percentile interval, 2000 resamples of prompts, seed 6304",
+  "heldout": {
+    "length_mean": 308.51,
+    "length_std": 254.36389268133163,
+    "length_q25": 70.0,
+    "length_median": 247.5,
+    "length_q75": 521.0,
+    "length_iqr": 451.0,
+    "n_responses": 200,
+    "generated_tokens": 61702,
+    "length_mean_ci95": [
+      273.30425,
+      347.07599999999996
+    ],
+    "reward_mean": 1.5568870544433593,
+    "reward_std": 1.6661677641176011,
+    "reward_mean_ci95": [
+      1.3241282119750977,
+      1.7796381492614743
+    ],
+    "kl_token_mean": 0.0,
+    "kl_token_mean_ci95": [
+      0.0,
+      0.0
+    ],
+    "kl_sequence_mean": 0.0,
+    "kl_sequence_mean_ci95": [
+      0.0,
+      0.0
+    ],
+    "entropy": 0.8275790681567217,
+    "entropy_ci95": [
+      0.77764345075255,
+      0.8831320682278903
+    ],
+    "entropy_exact": 1.0480549304239029,
+    "entropy_exact_ci95": [
+      0.9788612596386836,
+      1.1249515266355032
+    ],
+    "no_eos_fraction": 0.1,
+    "no_eos_fraction_ci95": [
+      0.06,
+      0.14
+    ],
+    "truncated_fraction": 0.1,
+    "words_mean": 214.62
+  },
+  "peak_vram_bytes": 11123103232,
+  "wall_clock_sec": 1353.715345816
+}

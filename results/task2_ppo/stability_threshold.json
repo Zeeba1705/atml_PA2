@@ -1,0 +1,8 @@
+{
+  "threshold": 0.001106669835280627,
+  "definition": "3 x median |delta_kl| over the updates of the standard run",
+  "delta_kl": "sampled kl estimate after the update minus before it, on the same rollout tokens. the reference term cancels, so this is the mean change in log-prob of the sampled tokens: a measure of how far the update moved the policy on its own rollout, not a fresh estimate of kl from the reference",
+  "source": "results/task2_ppo/standard/train_log.jsonl",
+  "n_updates": 20,
+  "git_commit": "cee7f724fb230e0198ae39aac30ea481f39a9244"
+}
