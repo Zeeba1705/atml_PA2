@@ -604,6 +604,22 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             ratio_devs.append(max_ratio_dev)
             update_retries += retries
 
+        #same tokens scored again after the update, so the change in kl is caused by this update alone
+        with torch.no_grad():
+            after_logp, _ = response_token_logprobs(
+                policy,
+                rollout["sequences"],
+                rollout["attention_mask"],
+                rollout["prompt_width"],
+                rollout["response_ids"]
+            )
+
+        after_logp= after_logp.float()
+        after_ratio= torch.exp(after_logp - rollout["old_logp"])
+        after_outside= ((after_ratio < 1.0 - clip_epsilon) | (after_ratio > 1.0 + clip_epsilon)).float()
+
+        kl_after= sampled_kl(after_logp, rollout["ref_logp"], rollout["mask"]).item()
+
         for name, model in [("policy", policy), ("value model", value_model)]:
             for p in trainable_parameters(model):
                 if not torch.isfinite(p).all():
@@ -626,6 +642,8 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             "reward": rollout["reward"].mean().item(),
             "reward_after_eos_penalty": rollout["task_reward"].mean().item(),
             "kl": rollout["kl"],
+            "kl_after_update": kl_after,
+            "delta_kl": kl_after - rollout["kl"],
             "policy_loss": sum(policy_losses) / len(policy_losses),
             "value_loss": sum(value_losses) / len(value_losses),
             "entropy": rollout["entropy_sampled"],
@@ -644,6 +662,8 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             #largest |ratio - 1| over valid tokens, shows how far the update is from the clip range
             "max_ratio_deviation": ratio_devs[-1],
             "max_ratio_deviation_epochs": ratio_devs,
+            "clip_fraction_after_update": masked_mean(after_outside, rollout["mask"]).item(),
+            "max_ratio_deviation_after_update": ((after_ratio - 1.0).abs() * rollout["mask"]).max().item(),
             "grad_norm_epochs": policy_grad_norms,
             "value_grad_norm_epochs": value_grad_norms,
             "retries": update_retries,
@@ -670,6 +690,7 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
         print(
             f"reward={record['reward']:.4f}, "
             f"kl={record['kl']:.6f}, "
+            f"delta_kl={record['delta_kl']:.6f}, "
             f"policy_loss={record['policy_loss']:.4f}, "
             f"value_loss={record['value_loss']:.4f}, "
             f"entropy={record['entropy']:.4f}, "
