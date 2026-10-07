@@ -225,6 +225,14 @@ python -m task2_ppo.find_candidates --config configs/ppo.yaml
 
 These are candidates from one sampled response per prompt; the examples are chosen and judged by hand.
 
+Tables and figures (CPU, reads the saved result files only):
+
+```bash
+python -m task2_ppo.make_tables --config configs/ppo.yaml
+```
+
+It writes `summary.csv` (one row per run: held-out metrics with intervals, training budget, wall-clock, peak VRAM, S1 and S2), `paired_differences.csv` (per-prompt reward and length differences from the midpoint with paired bootstrap intervals, and how many responses are identical), `clipping_cached.csv` and `standard_trajectory.csv` into `results/task2_ppo/`, and the plots into `results/task2_ppo/figures/`. Runs without an evaluation yet are listed with empty held-out columns.
+
 Each update samples `prompts_per_update` prompts from a seeded order of `data/rl_prompt_pool_train.jsonl` (the same sequence for every fork), runs `ppo_epochs` optimisation steps on that rollout, appends one line to `results/task2_ppo/<run_name>/train_log.jsonl` and the sampled response to `rollouts.jsonl`, and saves a checkpoint to `outputs/task2_ppo/<run_name>/checkpoints/`. `--resume` continues from the latest checkpoint and starts from the midpoint when there is none.
 
 Choices that are not fixed by the handout:
