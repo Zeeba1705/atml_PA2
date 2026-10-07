@@ -58,7 +58,8 @@ def check_setup(data_paths, smoke, allow_cpu):
     #fail early with the fix spelled out, a fresh colab session has no gpu or data until set up
     if not torch.cuda.is_available() and not smoke and not allow_cpu:
         raise SystemExit(
-            "No GPU found. On Colab: Runtime > Change runtime type > GPU, then rerun sections 1-5. "
+            "No GPU found. Select a GPU runtime (Colab: Runtime > Change runtime type, Kaggle: Settings > Accelerator), "
+            "then rerun the setup cells of the launcher notebook. "
             "For a CPU check use --smoke, or pass --allow-cpu to run the full model on CPU anyway."
         )
 
@@ -66,8 +67,8 @@ def check_setup(data_paths, smoke, allow_cpu):
         if not repo_path(path).exists():
             raise SystemExit(
                 f"Missing data file {path}. "
-                "Run the course asset step first (section 5 of colab/run.ipynb, "
-                "or python -m scripts.download_assets)."
+                "Run the course asset step of the launcher notebook first "
+                "(python -m scripts.download_assets)."
             )
 
 

@@ -246,6 +246,44 @@ python -m task3_grpo.analyze_group_size --config configs/grpo.yaml
 python -m task3_grpo.compare_normalization --config configs/grpo.yaml
 ```
 
+Commands (run from the repository root):
+
+```bash
+# unit tests for the objective and the study helpers
+python -m pytest tests/test_grpo.py tests/test_grpo_accumulation.py tests/test_grpo_studies.py -q
+
+# smoke: Qwen2.5-0.5B with a fresh LoRA, 2 updates, 16 completion tokens, writes under outputs/smoke/ and results/smoke/
+python -m task3_grpo.continue_train --config configs/grpo.yaml --run-name standard --smoke
+
+# standard continuation: 20 updates from the supplied midpoint, final adapter in outputs/task3_grpo/standard
+python -m task3_grpo.continue_train --config configs/grpo.yaml --run-name standard --resume
+
+# held-out evaluation, same protocol as Task 2 (no --adapter = base policy)
+python -m task3_grpo.evaluate --config configs/grpo.yaml --adapter outputs/task3_grpo/standard --name standard
+python -m task3_grpo.evaluate --config configs/grpo.yaml --adapter checkpoints/grpo_midpoint_policy --name midpoint
+python -m task3_grpo.evaluate --config configs/grpo.yaml --name sft
+
+# group-size study on the cached completions (CPU, no training)
+python -m task3_grpo.analyze_group_size --config configs/grpo.yaml
+
+# matched 8-update forks norm_grpo and norm_dr_grpo from the midpoint, each evaluated on the held-out prompts
+python -m task3_grpo.compare_normalization --config configs/grpo.yaml
+```
+
+Each update samples `num_generations` completions of one prompt from a seeded prompt order (the same sequence for every fork), computes group-relative advantages over all of them, and takes `policy_epochs` optimisation steps. It appends one line to `results/task3_grpo/<run_name>/train_log.jsonl`, one line per completion to `rollouts.jsonl` (reward, advantage, length, whether it was masked, and its token weight), and saves a checkpoint to `outputs/task3_grpo/<run_name>/checkpoints/`.
+
+Choices that are not fixed by the handout:
+
+- A group is informative when its within-group reward standard deviation (population) is above 1e-6, the `eps` default of `group_relative_advantages`. The same tolerance is used in training and in the group-size study.
+- Completions that hit `max_completion_length` are masked out of the loss (`mask_truncated_completions`) but still count in their group's mean and standard deviation. When every completion of an update is masked the loss is zero and no optimisation step is taken; the update is logged with `no_gradient: true` and counted in `train_metrics.json`.
+- Completions go through the model one at a time and their gradients are accumulated, to fit a T4. The sum is the released batch loss: the policy term weighted by 1/K and the KL term by the completion's share of the valid tokens (`tests/test_grpo_accumulation.py`).
+- LoRA dropout is off during the step, as in Task 2. With one epoch per rollout the ratio is exactly 1 inside the step, so `clip_fraction` is 0 by construction; `clip_fraction_after_update` and `max_ratio_deviation_after_update` are measured on the same rollout after the step.
+- The evaluation reads `eval_max_response_length` and `reward_max_length` from `configs/ppo.yaml` and calls the Task 2 scoring functions, so Tasks 2 and 3 share one held-out protocol.
+
+`analyze_group_size` splits each prompt's 8 cached completions into 8/K groups of K (200 random splits, config seed) so every K uses the same completions, and writes `results/task3_grpo/group_size_study.json`. It reports the informative-group rate, the mean within-group reward standard deviation, the variance of the group-relative advantage, and the variance of the centred reward (reward minus group mean), overall and for three difficulty bins: prompts ranked by mean reward over their 8 completions, bottom third hard, middle third medium, top third easy. The advantage variance is close to the informative-group rate by construction, because a normalised advantage has variance near 1 inside every informative group; the centred-reward variance is the signal before that normalisation.
+
+`compare_normalization` writes `results/task3_grpo/normalization_study.json`. Its length-conditioned statistic is the per-token weight |A_k| x w_k (w_k = 1/T_k for `grpo`, 1/`max_completion_length` for `dr_grpo`, 0 for a masked completion), averaged within quartiles of the training completion length pooled over both forks, together with each quartile's share of the total per-token weight and of the total per-sequence weight (per-token weight x T_k).
+
 ### Task 4 - Safety calibration
 
 The judge loader/parser are supplied. You must implement the requested generation aggregation and evaluation.
