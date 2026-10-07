@@ -576,6 +576,7 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
         clip_fractions= []
         policy_grad_norms= []
         value_grad_norms= []
+        ratio_devs= []
         update_retries= 0
 
         for epoch in range(ppo_epochs):
@@ -600,6 +601,7 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             clip_fractions.append(clip_fraction)
             policy_grad_norms.append(policy_grad_norm)
             value_grad_norms.append(value_grad_norm)
+            ratio_devs.append(max_ratio_dev)
             update_retries += retries
 
         for name, model in [("policy", policy), ("value model", value_model)]:
@@ -639,6 +641,9 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
             "policy_loss_epochs": policy_losses,
             "value_loss_epochs": value_losses,
             "clip_fraction_epochs": clip_fractions,
+            #largest |ratio - 1| over valid tokens, shows how far the update is from the clip range
+            "max_ratio_deviation": ratio_devs[-1],
+            "max_ratio_deviation_epochs": ratio_devs,
             "grad_norm_epochs": policy_grad_norms,
             "value_grad_norm_epochs": value_grad_norms,
             "retries": update_retries,
@@ -664,11 +669,12 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
 
         print(
             f"reward={record['reward']:.4f}, "
-            f"kl={record['kl']:.4f}, "
+            f"kl={record['kl']:.6f}, "
             f"policy_loss={record['policy_loss']:.4f}, "
             f"value_loss={record['value_loss']:.4f}, "
             f"entropy={record['entropy']:.4f}, "
-            f"clip_fraction={record['clip_fraction']:.4f}"
+            f"clip_fraction={record['clip_fraction']:.4f}, "
+            f"max_ratio_dev={record['max_ratio_deviation']:.4f}"
         )
         print(
             f"grad_norm={record['grad_norm']:.4f}, "
