@@ -1,0 +1,356 @@
+{
+  "git_commit": "4bdf67c282393b510524cdbe28dc7dc4ff25cacf",
+  "seed": 6304,
+  "fork_updates": 8,
+  "num_generations": 4,
+  "max_completion_length": 512,
+  "length_bin_edges": [
+    66.25,
+    200.0,
+    328.25
+  ],
+  "definitions": {
+    "length_bins": "quartiles of the training completion length T_k, pooled over both runs; a length equal to an edge goes to the lower bin",
+    "per_token_weight": "|A_k| x w_k with w_k = 1/T_k for grpo and 1/max_completion_length for dr_grpo, 0 for a completion masked for hitting the length cap",
+    "per_token_weight_share": "the bin's sum of per-token weights over completions, divided by the sum over all bins",
+    "per_sequence_weight": "per-token weight x T_k, the completion's whole weight in the policy term",
+    "per_sequence_weight_share": "the bin's sum of per-sequence weights, divided by the sum over all bins"
+  },
+  "note": "each update uses one prompt with K completions, so there are few completions per bin; both forks see the same prompt sequence but sample their own completions",
+  "budget_note": "forks run 8 updates from the midpoint, the standard run has 20",
+  "smoke": false,
+  "runs": [
+    {
+      "run_name": "norm_grpo",
+      "loss_type": "grpo",
+      "updates": 8,
+      "updates_without_gradient": 0,
+      "generated_tokens_train": 7043,
+      "generated_tokens_heldout": 59964,
+      "heldout_reward_mean": 1.4112515258789062,
+      "heldout_reward_mean_ci95": [
+        1.1959674682617187,
+        1.6184622268676756
+      ],
+      "heldout_kl_token_mean": 4.226293013780339e-05,
+      "heldout_kl_token_mean_ci95": [
+        9.900844160239885e-07,
+        8.342812491105948e-05
+      ],
+      "heldout_kl_sequence_mean": 0.012671271713916212,
+      "heldout_kl_sequence_mean_ci95": [
+        0.00029787008493440233,
+        0.02503664756825309
+      ],
+      "heldout_entropy": 0.8340664589517904,
+      "heldout_entropy_ci95": [
+        0.7798807613371678,
+        0.8928551530628386
+      ],
+      "heldout_length_mean": 299.82,
+      "heldout_length_mean_ci95": [
+        265.1135,
+        337.506875
+      ],
+      "heldout_no_eos_fraction": 0.1,
+      "heldout_no_eos_fraction_ci95": [
+        0.06,
+        0.145
+      ],
+      "heldout_length_std": 250.15866485093014,
+      "heldout_length_iqr": 407.5,
+      "train_reward": [
+        -1.4879150390625,
+        -0.427276611328125,
+        1.12066650390625,
+        -1.0902099609375,
+        3.11669921875,
+        0.77471923828125,
+        -0.238739013671875,
+        -2.077880859375
+      ],
+      "train_kl": [
+        5.054037683294155e-05,
+        0.00019124532991554588,
+        -0.0004716335970442742,
+        8.630039519630373e-05,
+        5.421247806225438e-06,
+        -9.7995791293215e-05,
+        -0.0008706151857040823,
+        0.00044129995512776077
+      ],
+      "train_reward_std_within_group": [
+        0.6885502338409424,
+        0.6570132374763489,
+        0.5854775309562683,
+        1.4332003593444824,
+        0.5270839333534241,
+        0.21410083770751953,
+        0.43173205852508545,
+        0.7412805557250977
+      ],
+      "train_uninformative_group_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "train_response_length": [
+        73.0,
+        426.75,
+        201.25,
+        322.25,
+        230.25,
+        422.75,
+        52.25,
+        32.25
+      ],
+      "train_truncated_fraction": [
+        0.0,
+        0.75,
+        0.0,
+        0.25,
+        0.0,
+        0.5,
+        0.0,
+        0.0
+      ],
+      "train_masked_completions": [
+        0,
+        3,
+        0,
+        1,
+        0,
+        2,
+        0,
+        0
+      ],
+      "train_grad_norm": [
+        0.6953042149543762,
+        0.05195466801524162,
+        0.42904701828956604,
+        0.15440884232521057,
+        0.18439392745494843,
+        0.1164526715874672,
+        0.5608353018760681,
+        0.6212722659111023
+      ],
+      "length_bins": [
+        {
+          "bin": "q1_shortest",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 31.0,
+          "per_token_weight_mean": 0.028278730240904444,
+          "per_token_weight_share": 0.685830801038562,
+          "per_sequence_weight_mean": 0.7283615143969655,
+          "per_sequence_weight_share": 0.25977870241863077
+        },
+        {
+          "bin": "q2",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 131.25,
+          "per_token_weight_mean": 0.00796107044009441,
+          "per_token_weight_share": 0.19307611305534128,
+          "per_sequence_weight_mean": 0.8176475782529451,
+          "per_sequence_weight_share": 0.29162362743746156
+        },
+        {
+          "bin": "q3",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 240.25,
+          "per_token_weight_mean": 0.004085897556501124,
+          "per_token_weight_share": 0.0990933599304013,
+          "per_sequence_weight_mean": 0.9192267507314682,
+          "per_sequence_weight_share": 0.32785303426035856
+        },
+        {
+          "bin": "q4_longest",
+          "n_completions": 8,
+          "n_masked": 6,
+          "length_mean": 477.875,
+          "per_token_weight_mean": 0.0009071104932855479,
+          "per_token_weight_share": 0.021999725975695533,
+          "per_sequence_weight_mean": 0.33854101598262787,
+          "per_sequence_weight_share": 0.12074463588354911
+        }
+      ],
+      "per_token_weight_share_shortest": 0.685830801038562,
+      "per_token_weight_share_longest": 0.021999725975695533,
+      "per_sequence_weight_share_shortest": 0.25977870241863077,
+      "per_sequence_weight_share_longest": 0.12074463588354911
+    },
+    {
+      "run_name": "norm_dr_grpo",
+      "loss_type": "dr_grpo",
+      "updates": 8,
+      "updates_without_gradient": 0,
+      "generated_tokens_train": 7247,
+      "generated_tokens_heldout": 60199,
+      "heldout_reward_mean": 1.4854816436767577,
+      "heldout_reward_mean_ci95": [
+        1.3076405506134035,
+        1.6674607276916502
+      ],
+      "heldout_kl_token_mean": 3.335972575666943e-07,
+      "heldout_kl_token_mean_ci95": [
+        -4.2372491302657066e-05,
+        3.999367142845017e-05
+      ],
+      "heldout_kl_sequence_mean": 0.00010041110654128716,
+      "heldout_kl_sequence_mean_ci95": [
+        -0.012889218326112315,
+        0.012466968753265964
+      ],
+      "heldout_entropy": 0.8138662347521082,
+      "heldout_entropy_ci95": [
+        0.7615142967348264,
+        0.8693988243486421
+      ],
+      "heldout_length_mean": 300.995,
+      "heldout_length_mean_ci95": [
+        266.13275,
+        338.57949999999994
+      ],
+      "heldout_no_eos_fraction": 0.11,
+      "heldout_no_eos_fraction_ci95": [
+        0.07,
+        0.155
+      ],
+      "heldout_length_std": 254.7864497476269,
+      "heldout_length_iqr": 387.0,
+      "train_reward": [
+        -1.4879150390625,
+        -0.3466677665710449,
+        1.14215087890625,
+        -1.072113037109375,
+        3.4150390625,
+        0.8178634643554688,
+        -0.238739013671875,
+        -2.077880859375
+      ],
+      "train_kl": [
+        5.054037683294155e-05,
+        0.000230018311413005,
+        -0.0003393939696252346,
+        -0.00015323802654165775,
+        -0.00029174567316658795,
+        -8.904634159989655e-05,
+        -3.689995355671272e-05,
+        0.00114657252561301
+      ],
+      "train_reward_std_within_group": [
+        0.6885502338409424,
+        0.4648987948894501,
+        0.6638971567153931,
+        1.370131254196167,
+        0.3924821615219116,
+        0.510285496711731,
+        0.43173205852508545,
+        0.7412805557250977
+      ],
+      "train_uninformative_group_fraction": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "train_response_length": [
+        73.0,
+        426.75,
+        201.25,
+        333.25,
+        228.25,
+        464.75,
+        52.25,
+        32.25
+      ],
+      "train_truncated_fraction": [
+        0.0,
+        0.75,
+        0.0,
+        0.25,
+        0.0,
+        0.75,
+        0.0,
+        0.0
+      ],
+      "train_masked_completions": [
+        0,
+        3,
+        0,
+        1,
+        0,
+        3,
+        0,
+        0
+      ],
+      "train_grad_norm": [
+        0.08103518187999725,
+        0.02522745169699192,
+        0.18038856983184814,
+        0.09698786586523056,
+        0.1018897220492363,
+        0.012314383871853352,
+        0.06790181249380112,
+        0.04957951232790947
+      ],
+      "length_bins": [
+        {
+          "bin": "q1_shortest",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 31.0,
+          "per_token_weight_mean": 0.0014225810828065732,
+          "per_token_weight_share": 0.27653933889722476,
+          "per_sequence_weight_mean": 0.05317233889763884,
+          "per_sequence_weight_share": 0.06586567987096001
+        },
+        {
+          "bin": "q2",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 131.25,
+          "per_token_weight_mean": 0.0016467645855300361,
+          "per_token_weight_share": 0.3201189691791776,
+          "per_sequence_weight_mean": 0.19340599057250074,
+          "per_sequence_weight_share": 0.23957601497834285
+        },
+        {
+          "bin": "q3",
+          "n_completions": 8,
+          "n_masked": 0,
+          "length_mean": 239.25,
+          "per_token_weight_mean": 0.0017275272803090047,
+          "per_token_weight_share": 0.3358186452761436,
+          "per_sequence_weight_mean": 0.40404952258904814,
+          "per_sequence_weight_share": 0.5005045303366605
+        },
+        {
+          "bin": "q4_longest",
+          "n_completions": 8,
+          "n_masked": 7,
+          "length_mean": 504.375,
+          "per_token_weight_mean": 0.00034735386725515127,
+          "per_token_weight_share": 0.06752304664745402,
+          "per_sequence_weight_mean": 0.15665659413207322,
+          "per_sequence_weight_share": 0.19405377481403663
+        }
+      ],
+      "per_token_weight_share_shortest": 0.27653933889722476,
+      "per_token_weight_share_longest": 0.06752304664745402,
+      "per_sequence_weight_share_shortest": 0.06586567987096001,
+      "per_sequence_weight_share_longest": 0.19405377481403663
+    }
+  ]
+}

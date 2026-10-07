@@ -1,0 +1,338 @@
+{
+  "git_commit": "4bdf67c282393b510524cdbe28dc7dc4ff25cacf",
+  "seed": 6304,
+  "cache": "cached/grpo_k_cache.jsonl",
+  "n_prompts": 24,
+  "completions_per_prompt": 8,
+  "repeats": 200,
+  "informative_std_tolerance": 1e-06,
+  "smoke": false,
+  "definitions": {
+    "regrouping": "each prompt's 8 cached completions are shuffled and split into 8/K groups of K, so every K uses the same 192 completions; metrics are averaged over the random shuffles",
+    "informative_rate": "fraction of groups whose reward std (population) is above the tolerance",
+    "reward_std": "mean within-group reward std (population)",
+    "advantage_variance": "variance over completions of the group-relative advantage (r - group mean) / (group std + eps)",
+    "centred_reward_variance": "variance over completions of r - group mean, the group-relative signal before dividing by the std",
+    "difficulty_bins": "prompts ranked by mean reward over all 8 cached completions: bottom third hard, middle third medium, top third easy",
+    "ci95": "bootstrap over prompts"
+  },
+  "prompt_bins": {
+    "671": "hard",
+    "495": "hard",
+    "457": "hard",
+    "961": "hard",
+    "953": "hard",
+    "175": "hard",
+    "936": "hard",
+    "280": "hard",
+    "254": "medium",
+    "796": "medium",
+    "510": "medium",
+    "873": "medium",
+    "436": "medium",
+    "981": "medium",
+    "124": "medium",
+    "922": "medium",
+    "263": "easy",
+    "185": "easy",
+    "832": "easy",
+    "942": "easy",
+    "184": "easy",
+    "463": "easy",
+    "755": "easy",
+    "507": "easy"
+  },
+  "results": [
+    {
+      "group_size": 2,
+      "groups_per_prompt": 4,
+      "total_generations": 192,
+      "all": {
+        "n_prompts": 24,
+        "informative_rate": 0.9476562500000006,
+        "informative_rate_ci95": [
+          0.8583789062500006,
+          0.9968229166666673
+        ],
+        "reward_std": 0.38824254353841153,
+        "reward_std_ci95": [
+          0.28911285654703794,
+          0.5061566340128579
+        ],
+        "advantage_variance": 0.9476350907530858,
+        "advantage_variance_ci95": [
+          0.8583563009624192,
+          0.9968038576865146
+        ],
+        "centred_reward_variance": 0.3247764730950197,
+        "centred_reward_variance_ci95": [
+          0.17056560939798754,
+          0.544211026389772
+        ]
+      },
+      "hard": {
+        "n_prompts": 8,
+        "informative_rate": 0.8707812500000006,
+        "informative_rate_ci95": [
+          0.6207812500000004,
+          1.0000000000000007
+        ],
+        "reward_std": 0.48537261962890643,
+        "reward_std_ci95": [
+          0.26006538009643554,
+          0.7590212326049806
+        ],
+        "advantage_variance": 0.8707675400889334,
+        "advantage_variance_ci95": [
+          0.6207697851921952,
+          0.9999860309450436
+        ],
+        "centred_reward_variance": 0.516951981857419,
+        "centred_reward_variance_ci95": [
+          0.15319901739805938,
+          1.0630470081139352
+        ]
+      },
+      "medium": {
+        "n_prompts": 8,
+        "informative_rate": 0.9809375000000007,
+        "informative_rate_ci95": [
+          0.9528125000000006,
+          1.0000000000000007
+        ],
+        "reward_std": 0.37102249145507804,
+        "reward_std_ci95": [
+          0.2458112182617188,
+          0.5042251091003415
+        ],
+        "advantage_variance": 0.9809139193286502,
+        "advantage_variance_ci95": [
+          0.9527761343596363,
+          0.9999871256930475
+        ],
+        "centred_reward_variance": 0.2594479740411044,
+        "centred_reward_variance_ci95": [
+          0.11957018530368807,
+          0.4180945354383434
+        ]
+      },
+      "easy": {
+        "n_prompts": 8,
+        "informative_rate": 0.9912500000000006,
+        "informative_rate_ci95": [
+          0.9785937500000007,
+          1.0000000000000007
+        ],
+        "reward_std": 0.30833251953125,
+        "reward_std_ci95": [
+          0.18820495605468757,
+          0.46077337646484345
+        ],
+        "advantage_variance": 0.9912238128416736,
+        "advantage_variance_ci95": [
+          0.9785562989873284,
+          0.9999808915939462
+        ],
+        "centred_reward_variance": 0.19792946338653566,
+        "centred_reward_variance_ci95": [
+          0.0618267822265625,
+          0.4010026205778122
+        ]
+      }
+    },
+    {
+      "group_size": 4,
+      "groups_per_prompt": 2,
+      "total_generations": 192,
+      "all": {
+        "n_prompts": 24,
+        "informative_rate": 0.9583333333333339,
+        "informative_rate_ci95": [
+          0.8750000000000006,
+          1.0000000000000007
+        ],
+        "reward_std": 0.5494217206217283,
+        "reward_std_ci95": [
+          0.40908686690066837,
+          0.7161605374318288
+        ],
+        "advantage_variance": 0.9583271957549773,
+        "advantage_variance_ci95": [
+          0.874993223250273,
+          0.9999950371184952
+        ],
+        "centred_reward_variance": 0.48108236016084766,
+        "centred_reward_variance_ci95": [
+          0.2523742053701233,
+          0.8091411098614337
+        ]
+      },
+      "hard": {
+        "n_prompts": 8,
+        "informative_rate": 0.8750000000000006,
+        "informative_rate_ci95": [
+          0.6250000000000004,
+          1.0000000000000007
+        ],
+        "reward_std": 0.6833938296403513,
+        "reward_std_ci95": [
+          0.3682248572533582,
+          1.0644638885479738
+        ],
+        "advantage_variance": 0.8749967282773894,
+        "advantage_variance_ci95": [
+          0.6249972992024606,
+          0.9999971065680296
+        ],
+        "centred_reward_variance": 0.7647243307530884,
+        "centred_reward_variance_ci95": [
+          0.22539436330646276,
+          1.5763313811589041
+        ]
+      },
+      "medium": {
+        "n_prompts": 8,
+        "informative_rate": 1.0000000000000007,
+        "informative_rate_ci95": [
+          1.0000000000000007,
+          1.0000000000000007
+        ],
+        "reward_std": 0.5262308682284111,
+        "reward_std_ci95": [
+          0.35197987449901064,
+          0.7131941425400722
+        ],
+        "advantage_variance": 0.9999927610538463,
+        "advantage_variance_ci95": [
+          0.999989209510936,
+          0.9999960269850702
+        ],
+        "centred_reward_variance": 0.3851807792857287,
+        "centred_reward_variance_ci95": [
+          0.17763100421428674,
+          0.6252631136830891
+        ]
+      },
+      "easy": {
+        "n_prompts": 8,
+        "informative_rate": 1.0000000000000007,
+        "informative_rate_ci95": [
+          1.0000000000000007,
+          1.0000000000000007
+        ],
+        "reward_std": 0.4386404639964227,
+        "reward_std_ci95": [
+          0.2672990769008863,
+          0.6551790751675509
+        ],
+        "advantage_variance": 0.999992097933696,
+        "advantage_variance_ci95": [
+          0.9999886325022846,
+          0.9999950758399823
+        ],
+        "centred_reward_variance": 0.2933419704437258,
+        "centred_reward_variance_ci95": [
+          0.09176076436042788,
+          0.5957087006568913
+        ]
+      }
+    },
+    {
+      "group_size": 8,
+      "groups_per_prompt": 1,
+      "total_generations": 192,
+      "all": {
+        "n_prompts": 24,
+        "informative_rate": 0.9583333333333339,
+        "informative_rate_ci95": [
+          0.8750000000000006,
+          1.0000000000000007
+        ],
+        "reward_std": 0.6190544134665207,
+        "reward_std_ci95": [
+          0.4647018136499963,
+          0.8033358675693805
+        ],
+        "advantage_variance": 0.9583290996055117,
+        "advantage_variance_ci95": [
+          0.8749954267866713,
+          0.9999963887933474
+        ],
+        "centred_reward_variance": 0.5598951438441877,
+        "centred_reward_variance_ci95": [
+          0.29392904883328186,
+          0.9406045884126819
+        ]
+      },
+      "hard": {
+        "n_prompts": 8,
+        "informative_rate": 0.8750000000000006,
+        "informative_rate_ci95": [
+          0.6250000000000004,
+          1.0000000000000007
+        ],
+        "reward_std": 0.7633688437029321,
+        "reward_std_ci95": [
+          0.4120041585055562,
+          1.188133805676503
+        ],
+        "advantage_variance": 0.8749973884556095,
+        "advantage_variance_ci95": [
+          0.6249978127976941,
+          0.9999977938880584
+        ],
+        "centred_reward_variance": 0.8869009069167099,
+        "centred_reward_variance_ci95": [
+          0.26247340571135347,
+          1.8253125639981638
+        ]
+      },
+      "medium": {
+        "n_prompts": 8,
+        "informative_rate": 1.0000000000000007,
+        "informative_rate_ci95": [
+          1.0000000000000007,
+          1.0000000000000007
+        ],
+        "reward_std": 0.5990220788024178,
+        "reward_std_ci95": [
+          0.40970420887031855,
+          0.8038870615352046
+        ],
+        "advantage_variance": 0.9999956471654693,
+        "advantage_variance_ci95": [
+          0.9999941712986191,
+          0.9999971639694247
+        ],
+        "centred_reward_variance": 0.44691224163398063,
+        "centred_reward_variance_ci95": [
+          0.2058931767940517,
+          0.7271680021658526
+        ]
+      },
+      "easy": {
+        "n_prompts": 8,
+        "informative_rate": 1.0000000000000007,
+        "informative_rate_ci95": [
+          1.0000000000000007,
+          1.0000000000000007
+        ],
+        "reward_std": 0.49477231789421217,
+        "reward_std_ci95": [
+          0.30505713862907136,
+          0.7371266968508988
+        ],
+        "advantage_variance": 0.9999942631954561,
+        "advantage_variance_ci95": [
+          0.9999919560896356,
+          0.9999962564337035
+        ],
+        "centred_reward_variance": 0.34587228298187256,
+        "centred_reward_variance_ci95": [
+          0.10848855972290031,
+          0.7016501188278191
+        ]
+      }
+    }
+  ]
+}
