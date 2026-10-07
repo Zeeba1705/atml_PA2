@@ -288,6 +288,16 @@ Choices that are not fixed by the handout:
 - LoRA dropout is off during the step, as in Task 2. With one epoch per rollout the ratio is exactly 1 inside the step, so `clip_fraction` is 0 by construction; `clip_fraction_after_update` and `max_ratio_deviation_after_update` are measured on the same rollout after the step.
 - The evaluation reads `eval_max_response_length` and `reward_max_length` from `configs/ppo.yaml` and calls the Task 2 scoring functions, so Tasks 2 and 3 share one held-out protocol.
 
+- The released `score_reward_pairs` gives the reward model the full prompt, while the policy sees it cut to `max_prompt_length`. When prompt plus response is longer than the reward model's input limit the end is cut off, and for a very long prompt the response is lost entirely, so every completion of that prompt gets the same reward. GRPO training uses the helper's default limit of 1024 tokens (`configs/grpo.yaml` sets none); PPO training and both tasks' held-out evaluations use `reward_max_length` 1280 from `configs/ppo.yaml`. In the standard GRPO run this touched 6 of 80 completions in 2 updates, including the run's one uninformative group (update 14, a 1292-token prompt).
+
+Tables and figures (CPU, reads the saved result files only):
+
+```bash
+python -m task3_grpo.make_tables --config configs/grpo.yaml
+```
+
+It writes `summary.csv`, `paired_differences.csv`, `group_size.csv`, `length_bins.csv` and `standard_trajectory.csv` into `results/task3_grpo/` and the plots into `results/task3_grpo/figures/`. The `sft` row is read from `results/task2_ppo/sft`: the base policy under the identical held-out protocol was evaluated once, and the first 8 prompts were checked to reproduce exactly on the Task 3 platform.
+
 `analyze_group_size` splits each prompt's 8 cached completions into 8/K groups of K (200 random splits, config seed) so every K uses the same completions, and writes `results/task3_grpo/group_size_study.json`. It reports the informative-group rate, the mean within-group reward standard deviation, the variance of the group-relative advantage, and the variance of the centred reward (reward minus group mean), overall and for three difficulty bins: prompts ranked by mean reward over their 8 completions, bottom third hard, middle third medium, top third easy. The advantage variance is close to the informative-group rate by construction, because a normalised advantage has variance near 1 inside every informative group; the centred-reward variance is the signal before that normalisation.
 
 `compare_normalization` writes `results/task3_grpo/normalization_study.json`. Its length-conditioned statistic is the per-token weight |A_k| x w_k (w_k = 1/T_k for `grpo`, 1/`max_completion_length` for `dr_grpo`, 0 for a masked completion), averaged within quartiles of the training completion length pooled over both forks, together with each quartile's share of the total per-token weight and of the total per-sequence weight (per-token weight x T_k).
