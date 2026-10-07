@@ -13,7 +13,7 @@ from common.metrics import bootstrap_ci, masked_mean
 from common.models import clear_gpu, load_policy, load_tokenizer
 from task1_dpo.train import check_setup, git_commit, model_dtype
 from task2_ppo.continue_train import adjust_config, run_ppo
-from task2_ppo.evaluate import run_evaluation
+from task2_ppo.evaluate import train_and_evaluate_fork
 from task2_ppo.ppo import compute_gae, normalize_advantages, ppo_policy_loss, shaped_rewards
 
 SMOKE_ROWS= 3
@@ -190,7 +190,22 @@ def analyze_cached_batch(config_path: str, adapter: str | None, name: str, smoke
             "max": float(ratio_dev.max()),
         },
         "epsilons": [],
+        "rows": [],
     }
+
+    #per cached response, to see whether the tokens outside the clip range are spread out or sit in a few rows
+    for i in range(len(rows)):
+        row_dev= (ratio[i] - 1.0).abs()[:n_tokens[i]]
+
+        out["rows"].append({
+            "row_index": i,
+            "prompt_id": rows[i]["prompt_id"],
+            "n_tokens": n_tokens[i],
+            "terminated_with_eos": bool(rows[i]["terminated_with_eos"]),
+            "ratio_abs_deviation_mean": row_dev.mean().item(),
+            "ratio_abs_deviation_max": row_dev.max().item(),
+            "position_of_max": int(row_dev.argmax().item()),
+        })
 
     for eps in cfg["clip_values"]:
         eps= float(eps)
@@ -208,6 +223,9 @@ def analyze_cached_batch(config_path: str, adapter: str | None, name: str, smoke
         #clipping only changes the objective when the min picks the clipped term
         binding= (((ratio > 1.0 + eps) & (advantages > 0)) | ((ratio < 1.0 - eps) & (advantages < 0))).float() * mask
 
+        for i in range(len(rows)):
+            out["rows"][i][f"tokens_outside_{eps:g}"]= int(outside[i].sum().item())
+
         out["epsilons"].append({
             "clip_epsilon": eps,
             "clipped_surrogate": -loss.item(),
@@ -224,6 +242,14 @@ def analyze_cached_batch(config_path: str, adapter: str | None, name: str, smoke
             f"clipped_surrogate={-loss.item():.6f}, "
             f"clip_fraction={clip_fraction.item():.4f}, "
             f"binding_fraction={out['epsilons'][-1]['binding_fraction']:.4f}"
+        )
+
+    for row in sorted(out["rows"], key=lambda r: -r["ratio_abs_deviation_max"])[:3]:
+        print(
+            f"row {row['row_index']}: "
+            f"tokens={row['n_tokens']}, "
+            f"mean |ratio-1|={row['ratio_abs_deviation_mean']:.4f}, "
+            f"max |ratio-1|={row['ratio_abs_deviation_max']:.4f} at token {row['position_of_max']}"
         )
 
     path= Path(cfg["results_dir"]) / f"clipping_cached_{name}.json"
@@ -294,7 +320,6 @@ def run_clipping_forks(config_path: str, smoke: bool = False, allow_cpu: bool = 
     cfg= adjust_config(load_yaml(config_path), smoke)
 
     results_dir= Path(cfg["results_dir"])
-    output_root= Path(cfg["output"]).parent
     fork_updates= int(cfg["fork_updates"])
 
     if smoke and not repo_path(results_dir / "standard" / "train_metrics.json").exists():
@@ -312,36 +337,14 @@ def run_clipping_forks(config_path: str, smoke: bool = False, allow_cpu: bool = 
         run_name= run_name_for(eps)
 
         #only epsilon changes: same midpoint, prompts, seed, kl beta and update budget
-        run_ppo(
+        log_rows, train, heldout = train_and_evaluate_fork(
             config_path,
-            updates=fork_updates,
+            run_name,
             clip_epsilon=eps,
-            run_name=run_name,
             smoke=smoke,
-            resume=True,
-            allow_cpu=allow_cpu
+            allow_cpu=allow_cpu,
+            gen_batch_size=gen_batch_size
         )
-        clear_gpu()
-
-        eval_path= results_dir / run_name / "eval_metrics.json"
-
-        if repo_path(eval_path).exists():
-            print(f"evaluation of '{run_name}' is already saved")
-        else:
-            run_evaluation(
-                config_path,
-                str(output_root / run_name),
-                run_name,
-                smoke,
-                None,
-                gen_batch_size,
-                allow_cpu
-            )
-            clear_gpu()
-
-        log_rows= read_jsonl(results_dir / run_name / "train_log.jsonl")
-        train= load_json(results_dir / run_name / "train_metrics.json")
-        heldout= load_json(eval_path)["heldout"]
 
         deltas= delta_kls(log_rows)
 

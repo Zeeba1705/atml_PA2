@@ -9,12 +9,12 @@ import torch.nn.functional as F
 
 from common.data import load_yaml, prompt_messages, read_jsonl, repo_path, write_jsonl
 from common.generation import batch_generate, response_token_logprobs, score_reward_pairs
-from common.logging_utils import save_json, set_seed, wall_timer
+from common.logging_utils import load_json, save_json, set_seed, wall_timer
 from common.metrics import BOOTSTRAP_RESAMPLES, bootstrap_ci, word_count
-from common.models import load_policy, load_reward_model, load_tokenizer, reference_mode
+from common.models import clear_gpu, load_policy, load_reward_model, load_tokenizer, reference_mode
 from task1_dpo.evaluate import length_stats
 from task1_dpo.train import check_setup, git_commit, model_dtype
-from task2_ppo.continue_train import adjust_config
+from task2_ppo.continue_train import adjust_config, run_ppo
 
 SMOKE_EXAMPLES= 3
 
@@ -278,6 +278,50 @@ def run_evaluation(config_path: str, adapter: str | None, name: str, smoke: bool
     print(f"saved eval metrics to {results_dir}")
 
     return metrics
+
+
+def train_and_evaluate_fork(config_path: str, run_name: str, clip_epsilon: float | None = None, kl_beta: float | None = None, smoke: bool = False, allow_cpu: bool = False, gen_batch_size: int = 4):
+    #one short fork from the supplied midpoint, then the common held-out protocol
+    #whatever is already finished is skipped, so a study can be rerun after a dead session
+    cfg= adjust_config(load_yaml(config_path), smoke)
+
+    results_dir= Path(cfg["results_dir"]) / run_name
+    adapter= Path(cfg["output"]).parent / run_name
+
+    #same midpoint, prompt sequence, seed and update budget for every fork
+    run_ppo(
+        config_path,
+        updates=int(cfg["fork_updates"]),
+        clip_epsilon=clip_epsilon,
+        kl_beta=kl_beta,
+        run_name=run_name,
+        smoke=smoke,
+        resume=True,
+        allow_cpu=allow_cpu
+    )
+    clear_gpu()
+
+    eval_path= results_dir / "eval_metrics.json"
+
+    if repo_path(eval_path).exists():
+        print(f"evaluation of '{run_name}' is already saved")
+    else:
+        run_evaluation(
+            config_path,
+            str(adapter),
+            run_name,
+            smoke,
+            None,
+            gen_batch_size,
+            allow_cpu
+        )
+        clear_gpu()
+
+    log_rows= read_jsonl(results_dir / "train_log.jsonl")
+    train= load_json(results_dir / "train_metrics.json")
+    heldout= load_json(eval_path)["heldout"]
+
+    return log_rows, train, heldout
 
 
 def main():
