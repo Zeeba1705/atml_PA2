@@ -203,6 +203,28 @@ python -m task2_ppo.analyze_clipping --config configs/ppo.yaml --part forks
 
 Each update uses one prompt, so per-update values are noisy; all forks see the same prompt sequence. Forks that are already trained or evaluated are skipped, so the command is safe to rerun.
 
+KL-pressure study and qualitative candidates:
+
+```bash
+# smoke
+python -m task2_ppo.ablate_kl --config configs/ppo.yaml --smoke
+
+# matched 8-update forks kl_0.0, kl_0.1, kl_0.2 from the midpoint, each evaluated on the held-out prompts
+python -m task2_ppo.ablate_kl --config configs/ppo.yaml
+
+# list reward-vs-quality candidates for every evaluated run against the midpoint's responses
+python -m task2_ppo.find_candidates --config configs/ppo.yaml
+```
+
+`ablate_kl` writes `results/task2_ppo/kl_ablation.json`: held-out reward, KL, entropy and length for each fork with bootstrap intervals, plus the per-update training trajectories (reward, KL, `delta_kl`, entropy, length). Only `kl_beta` changes between the forks; finished forks are skipped on a rerun.
+
+`find_candidates` needs the midpoint evaluation (`--name midpoint`). For every other evaluated run it compares each response with the midpoint's response to the same prompt and writes `results/task2_ppo/candidates.json`, sorted by reward gain:
+
+- `suspect`: reward is higher than the midpoint's and at least one flag is set: `much_longer` (at least 1.5 x the midpoint's tokens), `no_eos` (hit the generation cap), `repeated_ngram` (a run of 8 whitespace-separated words appears 3 or more times).
+- `agree`: reward is higher, the response has more tokens than the midpoint's but under 1.5 x, and no flag is set.
+
+These are candidates from one sampled response per prompt; the examples are chosen and judged by hand.
+
 Each update samples `prompts_per_update` prompts from a seeded order of `data/rl_prompt_pool_train.jsonl` (the same sequence for every fork), runs `ppo_epochs` optimisation steps on that rollout, appends one line to `results/task2_ppo/<run_name>/train_log.jsonl` and the sampled response to `rollouts.jsonl`, and saves a checkpoint to `outputs/task2_ppo/<run_name>/checkpoints/`. `--resume` continues from the latest checkpoint and starts from the midpoint when there is none.
 
 Choices that are not fixed by the handout:
