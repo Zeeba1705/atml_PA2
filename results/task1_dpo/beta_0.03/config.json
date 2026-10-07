@@ -72,7 +72,7 @@
     "results_dir": "results/task1_dpo"
   },
   "run": {
-    "git_commit": "2efeaaa5ef61a0f06e168b750e098f9029b7af73",
+    "git_commit": "94e84cf08d07a78b82bb637c963a002b6a2a4bbf",
     "seed": 6304,
     "beta": 0.03,
     "base_model": "Qwen/Qwen2.5-1.5B-Instruct",

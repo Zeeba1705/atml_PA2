@@ -1,5 +1,5 @@
 {
-  "git_commit": "2efeaaa5ef61a0f06e168b750e098f9029b7af73",
+  "git_commit": "94e84cf08d07a78b82bb637c963a002b6a2a4bbf",
   "seed": 6304,
   "beta": 0.03,
   "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
@@ -13,9 +13,12 @@
   "max_examples": 600,
   "smoke": false,
   "optimizer_steps": 37,
+  "nonfinite_gradient_policy": "retry",
   "skipped_optimizer_steps": 0,
-  "final_step_train_loss": 0.6879305839538574,
-  "wall_clock_sec": 414.57721470800016,
+  "step_retries_total": 0,
+  "steps_with_retries": 0,
+  "final_step_train_loss": 0.6869805455207825,
+  "wall_clock_sec": 400.1994405110004,
   "peak_vram_bytes": 7146149888,
   "adapter": "/content/atml_PA2/outputs/task1_dpo/beta_0.03"
 }
