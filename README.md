@@ -153,6 +153,31 @@ python -m task2_ppo.analyze_clipping --config configs/ppo.yaml
 python -m task2_ppo.ablate_kl --config configs/ppo.yaml
 ```
 
+Training commands (run from the repository root; on Colab use `colab/run.ipynb`):
+
+```bash
+# unit tests for the objective
+python -m pytest tests/test_ppo.py -q
+
+# smoke: Qwen2.5-0.5B with a fresh LoRA, 2 updates, 24 response tokens, writes under outputs/smoke/ and results/smoke/
+python -m task2_ppo.continue_train --config configs/ppo.yaml --run-name standard --smoke
+
+# standard continuation: 20 updates from the supplied midpoint, final adapter in outputs/task2_ppo/standard
+python -m task2_ppo.continue_train --config configs/ppo.yaml --run-name standard --resume
+```
+
+Each update samples `prompts_per_update` prompts from a seeded order of `data/rl_prompt_pool_train.jsonl` (the same sequence for every fork), runs `ppo_epochs` optimisation steps on that rollout, appends one line to `results/task2_ppo/<run_name>/train_log.jsonl` and the sampled response to `rollouts.jsonl`, and saves a checkpoint to `outputs/task2_ppo/<run_name>/checkpoints/`. `--resume` continues from the latest checkpoint and starts from the midpoint when there is none.
+
+Choices that are not fixed by the handout:
+
+- A rollout that ends without EOS has `missing_eos_penalty` subtracted from its terminal reward. `reward` in the log is the raw reward-model score, `reward_after_eos_penalty` is what PPO trained on.
+- The policy and the critic are kept in eval mode (LoRA dropout off) during the optimisation steps, so the ratio is exactly 1 on the first epoch and the clip fraction counts real policy movement only. `clip_fraction` is the last epoch's value; `clip_fraction_epochs` has every epoch.
+- Advantages are normalised over the valid response tokens of the rollout with the released `normalize_advantages`; returns use the unnormalised advantages.
+- `entropy` is the released sampled estimate (minus the mean log-prob of the sampled tokens), `entropy_exact` is the token entropy from the full distribution.
+- Non-finite float16 gradients are handled as in Task 1: the step is redone at a lower gradient scale, never skipped.
+
+In smoke mode on a machine without the course assets, the tracked word-limit prompts stand in for the prompt pool and the critic starts from `value_model_init` with an untrained head.
+
 ### Task 3 - GRPO
 
 ```bash
