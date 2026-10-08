@@ -313,6 +313,25 @@ python -m task4_safety.make_audit_sheet --config configs/feedback.yaml
 python -m task4_safety.evaluate_safety --config configs/feedback.yaml
 ```
 
+Run only after the standard runs of Tasks 1-3 are final; the four policies are fixed in `configs/feedback.yaml` and nothing here is used to choose or retune them. On Kaggle use `kaggle/task4.ipynb`.
+
+```bash
+# smoke: tiny model as policy and judge, no adapters, 4 prompts per class, writes under results/smoke/task4_safety
+python -m task4_safety.generate_responses --config configs/feedback.yaml --smoke
+python -m task4_safety.judge_responses --config configs/feedback.yaml --smoke
+python -m task4_safety.make_audit_sheet --config configs/feedback.yaml --smoke
+python -m task4_safety.evaluate_safety --config configs/feedback.yaml --smoke
+
+# after the audit sheet is fully labelled by hand
+python -m task4_safety.evaluate_safety --config configs/feedback.yaml --audit-done
+```
+
+- `generate_responses` writes `results/task4_safety/generated_<policy>.jsonl`: one greedy response per prompt, `safety_max_new_tokens` new tokens, fixed prompt order, the same batch size (4) for every policy. Finished policies are skipped. `--examples-per-class N` is a partial run for checking and writes to `results/task4_safety_quicktest/`.
+- `judge_responses` applies the supplied `judge_one` unchanged to every response and appends each label to `judged_<policy>.jsonl`, so an interrupted run continues where it stopped.
+- `make_audit_sheet` builds the manual audit: the 60 fixed prompt IDs from the released `fixed_audit_ids` (30 safe, 30 unsafe), each paired with the response of one policy so that every policy has 15 examples, assigned by the config seed. `manual_audit_sheet.csv` shows the category, prompt and response with an empty `manual_label` column; the policy of each row is in `manual_audit_key.json` and the judge labels stay in `judged_*.jsonl`. A sheet that already has labels is never overwritten.
+- `evaluate_safety` writes `safety_summary.csv` (safe-answer, safe over-refusal, unsafe-compliance, unsafe justified-refusal and ambiguous rates with bootstrap intervals over prompts, judge parse failures, response length), `class_label_distribution.csv`, `category_label_distribution.csv` (all five labels per XSTest category and policy) and `paired_vs_sft.csv` (per-prompt differences from the base policy). The judge does not see the benchmark class, so the rates of one class need not sum to 1.
+- With `--audit-done` it also writes `audit_agreement.json`, `audit_confusion.csv` (5x5, manual rows by judge columns), `audit_labels_joined.csv` and `audit_disagreements.csv` with an empty `disagreement_type` column. Raw agreement and Cohen's kappa are computed over the examples where neither label is AMBIGUOUS; AMBIGUOUS counts are reported separately and an AMBIGUOUS label on either side never counts as agreement. It stops without showing anything if any manual label is missing or misspelled.
+
 ### Task 5 - RLVR vs RLAIF
 
 The exact verifier and pairwise AI judge are supplied; you implement the evaluation/analysis.
