@@ -8,8 +8,11 @@ from pathlib import Path
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
-from common.data import load_yaml, read_jsonl
+from common.data import load_yaml, read_jsonl, repo_path, write_jsonl
+from common.logging_utils import append_jsonl, save_json, wall_timer
 from common.models import resolve_dtype
+from task1_dpo.train import check_setup, git_commit
+from task4_safety.generate_responses import POLICIES, adjust_config
 
 LABELS = {
     "SAFE_ANSWER",
@@ -102,20 +105,96 @@ def judge_one(tok, model, prompt, response, max_new_tokens=64):
     return parse_json(generated)
 
 
+def run_judging(config_path: str, policies: list | None = None, smoke: bool = False, examples_per_class: int | None = None, allow_cpu: bool = False):
+    cfg= adjust_config(load_yaml(config_path), smoke, examples_per_class)
+
+    check_setup([cfg["paths"]["xstest"]], smoke, allow_cpu)
+
+    if policies is None:
+        policies= POLICIES
+
+    outdir= Path(cfg["task4_dir"])
+
+    for name in policies:
+        if not (outdir / f"generated_{name}.jsonl").exists():
+            raise SystemExit(f"No responses for '{name}' in {outdir}. Run task4_safety.generate_responses first.")
+
+    tok, model = load_judge(cfg)
+    print("Fixed Task 4 judge loaded:", cfg["ai_judge_model"])
+
+    max_new_tokens= int(cfg["judge_max_new_tokens"])
+    timer= wall_timer()
+
+    for name in policies:
+        rows= read_jsonl(outdir / f"generated_{name}.jsonl")
+        path= outdir / f"judged_{name}.jsonl"
+
+        #labels are appended one by one, so a dead session continues after the last judged response
+        done= set()
+
+        if path.exists():
+            done= {r["xstest_id"] for r in read_jsonl(path)}
+        else:
+            write_jsonl(path, [])
+
+        print(f"{name}: {len(done)} of {len(rows)} already judged")
+
+        n_new= 0
+
+        for row in rows:
+            if row["xstest_id"] in done:
+                continue
+
+            result= judge_one(
+                tok,
+                model,
+                row["prompt"],
+                row["response"],
+                max_new_tokens
+            )
+
+            #no prompt or response text here, and nothing is printed per row: the audit labels stay unseen
+            append_jsonl(path, {
+                "xstest_id": row["xstest_id"],
+                "policy": name,
+                "benchmark_class": row["benchmark_class"],
+                "type": row["type"],
+                "response_tokens": row["response_tokens"],
+                "label": result["label"],
+                "confidence": result["confidence"],
+                "rationale_tag": result["rationale_tag"],
+            })
+
+            n_new += 1
+
+            if n_new % 50 == 0:
+                print(f"{name}: judged {len(done) + n_new}/{len(rows)}, {timer():.0f}s")
+
+        print(f"saved judge labels of '{name}' to {path}")
+
+    save_json(outdir / "judge_info.json", {
+        "git_commit": git_commit(),
+        "judge_model": cfg["ai_judge_model"],
+        "judge_max_new_tokens": max_new_tokens,
+        "judge_temperature": float(cfg["judge_temperature"]),
+        "decoding": "greedy (do_sample=False), one response per call, supplied judge_one unchanged",
+        "quantized_4bit": bool(torch.cuda.is_available() and cfg.get("quantize_frozen_models", True)),
+        "gpu_name": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu",
+        "policies": policies,
+        "wall_clock_sec_this_session": timer(),
+        "smoke": smoke,
+    })
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/feedback.yaml")
-    ap.add_argument("--input", help="Optional generated JSONL file to inspect")
+    ap.add_argument("--policies", nargs="*", choices=POLICIES)
+    ap.add_argument("--examples-per-class", type=int)
+    ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--allow-cpu", action="store_true")
     args = ap.parse_args()
-    cfg = load_yaml(args.config)
-    tok, model = load_judge(cfg)
-    print("Fixed Task 4 judge loaded:", cfg["ai_judge_model"])
-    if args.input:
-        rows = read_jsonl(args.input)
-        print("Input rows:", len(rows))
-    raise NotImplementedError(
-        "TODO(student): apply judge_one to your frozen-policy response files, cache the labels, and implement the required Task 4 aggregation."
-    )
+    run_judging(args.config, args.policies, args.smoke, args.examples_per_class, args.allow_cpu)
 
 
 if __name__ == "__main__":
