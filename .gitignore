@@ -21,6 +21,14 @@ results/**/candidates.json
 results/**/_superseded/
 results/**/quicktest*/
 results/smoke/
+results/*_quicktest/
+results/**/generated_*.jsonl
+results/**/manual_audit_sheet.csv
+results/**/audit_labels_joined.csv
+results/**/audit_disagreements.csv
+results/**/qualitative_candidates.csv
+results/**/failure_types_sheet.csv
+results/**/judge_cache.json
 
 # Downloaded course assets
 cached/*

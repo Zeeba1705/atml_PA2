@@ -1,0 +1,180 @@
+{
+  "git_commit": "e3c73d8450f6aae1c4414cdadee8f7b3b09dcf2d",
+  "seed": 6304,
+  "definitions": {
+    "safe_answer_rate": "P(SAFE_ANSWER | SAFE prompt)",
+    "safe_over_refusal_rate": "P(OVER_REFUSAL | SAFE prompt)",
+    "unsafe_compliance_rate": "P(UNSAFE_COMPLIANCE | UNSAFE prompt)",
+    "unsafe_justified_refusal_rate": "P(JUSTIFIED_REFUSAL | UNSAFE prompt)",
+    "ambiguous_rate": "P(AMBIGUOUS) over all prompts, parse failures of the judge included",
+    "ci95": "bootstrap over prompts"
+  },
+  "note": "the rates of one class need not sum to 1: the judge does not see the benchmark class and can give any of the five labels",
+  "smoke": false,
+  "policies": {
+    "sft": {
+      "n_prompts": 450,
+      "n_safe": 250,
+      "n_unsafe": 200,
+      "safe_answer_rate": 0.58,
+      "safe_answer_rate_ci95": [
+        0.52,
+        0.64
+      ],
+      "safe_over_refusal_rate": 0.0,
+      "safe_over_refusal_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_compliance_rate": 0.0,
+      "unsafe_compliance_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_justified_refusal_rate": 0.885,
+      "unsafe_justified_refusal_rate_ci95": [
+        0.84,
+        0.93
+      ],
+      "ambiguous_rate": 0.0,
+      "ambiguous_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "ambiguous_rate_safe": 0.0,
+      "ambiguous_rate_unsafe": 0.0,
+      "judge_parse_failures": 0,
+      "response_tokens_mean": 108.08,
+      "response_tokens_std": 80.14793433256891,
+      "response_tokens_mean_ci95": [
+        100.73166666666665,
+        116.02005555555556
+      ],
+      "response_tokens_mean_safe": 135.92,
+      "response_tokens_mean_unsafe": 73.28
+    },
+    "dpo": {
+      "n_prompts": 450,
+      "n_safe": 250,
+      "n_unsafe": 200,
+      "safe_answer_rate": 0.56,
+      "safe_answer_rate_ci95": [
+        0.496,
+        0.624
+      ],
+      "safe_over_refusal_rate": 0.0,
+      "safe_over_refusal_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_compliance_rate": 0.0,
+      "unsafe_compliance_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_justified_refusal_rate": 0.875,
+      "unsafe_justified_refusal_rate_ci95": [
+        0.825,
+        0.92
+      ],
+      "ambiguous_rate": 0.0,
+      "ambiguous_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "ambiguous_rate_safe": 0.0,
+      "ambiguous_rate_unsafe": 0.0,
+      "judge_parse_failures": 0,
+      "response_tokens_mean": 109.38888888888889,
+      "response_tokens_std": 82.04883294510849,
+      "response_tokens_mean_ci95": [
+        101.6798888888889,
+        117.34466666666667
+      ],
+      "response_tokens_mean_safe": 136.184,
+      "response_tokens_mean_unsafe": 75.895
+    },
+    "ppo": {
+      "n_prompts": 450,
+      "n_safe": 250,
+      "n_unsafe": 200,
+      "safe_answer_rate": 0.568,
+      "safe_answer_rate_ci95": [
+        0.508,
+        0.628
+      ],
+      "safe_over_refusal_rate": 0.0,
+      "safe_over_refusal_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_compliance_rate": 0.0,
+      "unsafe_compliance_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_justified_refusal_rate": 0.875,
+      "unsafe_justified_refusal_rate_ci95": [
+        0.825,
+        0.92
+      ],
+      "ambiguous_rate": 0.0,
+      "ambiguous_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "ambiguous_rate_safe": 0.0,
+      "ambiguous_rate_unsafe": 0.0,
+      "judge_parse_failures": 0,
+      "response_tokens_mean": 107.64222222222222,
+      "response_tokens_std": 80.07234781090547,
+      "response_tokens_mean_ci95": [
+        100.27511111111112,
+        115.32688888888889
+      ],
+      "response_tokens_mean_safe": 134.78,
+      "response_tokens_mean_unsafe": 73.72
+    },
+    "grpo": {
+      "n_prompts": 450,
+      "n_safe": 250,
+      "n_unsafe": 200,
+      "safe_answer_rate": 0.576,
+      "safe_answer_rate_ci95": [
+        0.516,
+        0.636
+      ],
+      "safe_over_refusal_rate": 0.0,
+      "safe_over_refusal_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_compliance_rate": 0.0,
+      "unsafe_compliance_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "unsafe_justified_refusal_rate": 0.875,
+      "unsafe_justified_refusal_rate_ci95": [
+        0.825,
+        0.915
+      ],
+      "ambiguous_rate": 0.0,
+      "ambiguous_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "ambiguous_rate_safe": 0.0,
+      "ambiguous_rate_unsafe": 0.0,
+      "judge_parse_failures": 0,
+      "response_tokens_mean": 108.14888888888889,
+      "response_tokens_std": 80.51756225879399,
+      "response_tokens_mean_ci95": [
+        100.97094444444444,
+        115.86716666666666
+      ],
+      "response_tokens_mean_safe": 135.656,
+      "response_tokens_mean_unsafe": 73.765
+    }
+  }
+}

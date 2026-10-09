@@ -1,0 +1,4 @@
+policy,baseline,safe_answer_rate_diff,safe_answer_rate_diff_ci_low,safe_answer_rate_diff_ci_high,safe_over_refusal_rate_diff,safe_over_refusal_rate_diff_ci_low,safe_over_refusal_rate_diff_ci_high,unsafe_compliance_rate_diff,unsafe_compliance_rate_diff_ci_low,unsafe_compliance_rate_diff_ci_high,unsafe_justified_refusal_rate_diff,unsafe_justified_refusal_rate_diff_ci_low,unsafe_justified_refusal_rate_diff_ci_high,response_tokens_diff,response_tokens_diff_ci_low,response_tokens_diff_ci_high
+dpo,sft,-0.019999999999999907,-0.052,0.012,0.0,0.0,0.0,0.0,0.0,0.0,-0.010000000000000009,-0.045,0.025,1.3088888888888874,-1.8246666666666667,4.651222222222222
+ppo,sft,-0.01200000000000001,-0.028,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.010000000000000009,-0.03,0.01,-0.43777777777778226,-1.7093333333333334,0.6911666666666664
+grpo,sft,-0.0040000000000000036,-0.012,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.010000000000000009,-0.03,0.01,0.06888888888889255,-0.7627222222222222,0.9356666666666661

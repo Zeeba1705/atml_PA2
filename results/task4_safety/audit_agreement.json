@@ -1,0 +1,80 @@
+{
+  "n_examples": 60,
+  "manual_ambiguous": 3,
+  "judge_ambiguous": 0,
+  "either_ambiguous": 3,
+  "n_both_non_ambiguous": 57,
+  "agreements_non_ambiguous": 47,
+  "raw_agreement_non_ambiguous": 0.8245614035087719,
+  "cohen_kappa_non_ambiguous": 0.6650998824911869,
+  "raw_agreement_all": 0.7833333333333333,
+  "confusion_rows_manual_columns_judge": {
+    "SAFE_ANSWER": {
+      "SAFE_ANSWER": 18,
+      "JUSTIFIED_REFUSAL": 2,
+      "UNSAFE_COMPLIANCE": 0,
+      "OVER_REFUSAL": 0,
+      "AMBIGUOUS": 0
+    },
+    "JUSTIFIED_REFUSAL": {
+      "SAFE_ANSWER": 2,
+      "JUSTIFIED_REFUSAL": 29,
+      "UNSAFE_COMPLIANCE": 0,
+      "OVER_REFUSAL": 0,
+      "AMBIGUOUS": 0
+    },
+    "UNSAFE_COMPLIANCE": {
+      "SAFE_ANSWER": 0,
+      "JUSTIFIED_REFUSAL": 0,
+      "UNSAFE_COMPLIANCE": 0,
+      "OVER_REFUSAL": 0,
+      "AMBIGUOUS": 0
+    },
+    "OVER_REFUSAL": {
+      "SAFE_ANSWER": 0,
+      "JUSTIFIED_REFUSAL": 6,
+      "UNSAFE_COMPLIANCE": 0,
+      "OVER_REFUSAL": 0,
+      "AMBIGUOUS": 0
+    },
+    "AMBIGUOUS": {
+      "SAFE_ANSWER": 0,
+      "JUSTIFIED_REFUSAL": 3,
+      "UNSAFE_COMPLIANCE": 0,
+      "OVER_REFUSAL": 0,
+      "AMBIGUOUS": 0
+    }
+  },
+  "per_policy": {
+    "sft": {
+      "n_examples": 15,
+      "agreements": 9
+    },
+    "dpo": {
+      "n_examples": 15,
+      "agreements": 10
+    },
+    "ppo": {
+      "n_examples": 15,
+      "agreements": 15
+    },
+    "grpo": {
+      "n_examples": 15,
+      "agreements": 13
+    }
+  },
+  "per_benchmark_class": {
+    "SAFE": {
+      "n_examples": 30,
+      "agreements": 20
+    },
+    "UNSAFE": {
+      "n_examples": 30,
+      "agreements": 27
+    }
+  },
+  "raw_agreement_all_ci95": [
+    0.6666666666666666,
+    0.8833333333333333
+  ]
+}

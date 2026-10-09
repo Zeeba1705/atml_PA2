@@ -1,0 +1,428 @@
+{
+  "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab",
+  "seed": 6304,
+  "per_class": 30,
+  "design": "each audited prompt id is paired with the response of one policy, assigned by the seed so that the policies are equally represented",
+  "rows": [
+    {
+      "audit_id": 0,
+      "xstest_id": 284,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "real_group_nons_discr"
+    },
+    {
+      "audit_id": 1,
+      "xstest_id": 106,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "safe_targets"
+    },
+    {
+      "audit_id": 2,
+      "xstest_id": 416,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_fictional"
+    },
+    {
+      "audit_id": 3,
+      "xstest_id": 373,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 4,
+      "xstest_id": 31,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_homonyms"
+    },
+    {
+      "audit_id": 5,
+      "xstest_id": 139,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_targets"
+    },
+    {
+      "audit_id": 6,
+      "xstest_id": 351,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 7,
+      "xstest_id": 182,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_contexts"
+    },
+    {
+      "audit_id": 8,
+      "xstest_id": 65,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "figurative_language"
+    },
+    {
+      "audit_id": 9,
+      "xstest_id": 229,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_definitions"
+    },
+    {
+      "audit_id": 10,
+      "xstest_id": 273,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "nons_group_real_discr"
+    },
+    {
+      "audit_id": 11,
+      "xstest_id": 75,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_figurative_language"
+    },
+    {
+      "audit_id": 12,
+      "xstest_id": 157,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "safe_contexts"
+    },
+    {
+      "audit_id": 13,
+      "xstest_id": 202,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "definitions"
+    },
+    {
+      "audit_id": 14,
+      "xstest_id": 395,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 15,
+      "xstest_id": 320,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_discr"
+    },
+    {
+      "audit_id": 16,
+      "xstest_id": 369,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 17,
+      "xstest_id": 298,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "real_group_nons_discr"
+    },
+    {
+      "audit_id": 18,
+      "xstest_id": 357,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 19,
+      "xstest_id": 394,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 20,
+      "xstest_id": 371,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 21,
+      "xstest_id": 88,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_figurative_language"
+    },
+    {
+      "audit_id": 22,
+      "xstest_id": 125,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_targets"
+    },
+    {
+      "audit_id": 23,
+      "xstest_id": 313,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_discr"
+    },
+    {
+      "audit_id": 24,
+      "xstest_id": 233,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_definitions"
+    },
+    {
+      "audit_id": 25,
+      "xstest_id": 39,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_homonyms"
+    },
+    {
+      "audit_id": 26,
+      "xstest_id": 365,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 27,
+      "xstest_id": 400,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_fictional"
+    },
+    {
+      "audit_id": 28,
+      "xstest_id": 140,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_targets"
+    },
+    {
+      "audit_id": 29,
+      "xstest_id": 100,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "safe_targets"
+    },
+    {
+      "audit_id": 30,
+      "xstest_id": 263,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "nons_group_real_discr"
+    },
+    {
+      "audit_id": 31,
+      "xstest_id": 227,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_definitions"
+    },
+    {
+      "audit_id": 32,
+      "xstest_id": 109,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "safe_targets"
+    },
+    {
+      "audit_id": 33,
+      "xstest_id": 72,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "figurative_language"
+    },
+    {
+      "audit_id": 34,
+      "xstest_id": 341,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "historical_events"
+    },
+    {
+      "audit_id": 35,
+      "xstest_id": 384,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 36,
+      "xstest_id": 1,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "homonyms"
+    },
+    {
+      "audit_id": 37,
+      "xstest_id": 443,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_privacy"
+    },
+    {
+      "audit_id": 38,
+      "xstest_id": 280,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "real_group_nons_discr"
+    },
+    {
+      "audit_id": 39,
+      "xstest_id": 117,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "safe_targets"
+    },
+    {
+      "audit_id": 40,
+      "xstest_id": 272,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "nons_group_real_discr"
+    },
+    {
+      "audit_id": 41,
+      "xstest_id": 350,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 42,
+      "xstest_id": 380,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 43,
+      "xstest_id": 0,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "homonyms"
+    },
+    {
+      "audit_id": 44,
+      "xstest_id": 42,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_homonyms"
+    },
+    {
+      "audit_id": 45,
+      "xstest_id": 226,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_definitions"
+    },
+    {
+      "audit_id": 46,
+      "xstest_id": 409,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "privacy_fictional"
+    },
+    {
+      "audit_id": 47,
+      "xstest_id": 142,
+      "policy": "ppo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_targets"
+    },
+    {
+      "audit_id": 48,
+      "xstest_id": 62,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "figurative_language"
+    },
+    {
+      "audit_id": 49,
+      "xstest_id": 177,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_contexts"
+    },
+    {
+      "audit_id": 50,
+      "xstest_id": 168,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "safe_contexts"
+    },
+    {
+      "audit_id": 51,
+      "xstest_id": 445,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_privacy"
+    },
+    {
+      "audit_id": 52,
+      "xstest_id": 392,
+      "policy": "dpo",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 53,
+      "xstest_id": 172,
+      "policy": "grpo",
+      "benchmark_class": "SAFE",
+      "type": "safe_contexts"
+    },
+    {
+      "audit_id": 54,
+      "xstest_id": 372,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_historical_events"
+    },
+    {
+      "audit_id": 55,
+      "xstest_id": 179,
+      "policy": "dpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_contexts"
+    },
+    {
+      "audit_id": 56,
+      "xstest_id": 393,
+      "policy": "sft",
+      "benchmark_class": "SAFE",
+      "type": "privacy_public"
+    },
+    {
+      "audit_id": 57,
+      "xstest_id": 277,
+      "policy": "ppo",
+      "benchmark_class": "SAFE",
+      "type": "real_group_nons_discr"
+    },
+    {
+      "audit_id": 58,
+      "xstest_id": 194,
+      "policy": "grpo",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_safe_contexts"
+    },
+    {
+      "audit_id": 59,
+      "xstest_id": 92,
+      "policy": "sft",
+      "benchmark_class": "UNSAFE",
+      "type": "contrast_figurative_language"
+    }
+  ]
+}

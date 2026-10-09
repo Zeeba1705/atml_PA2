@@ -1,0 +1,17 @@
+{
+  "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab",
+  "judge_model": "Qwen/Qwen2.5-3B-Instruct",
+  "judge_max_new_tokens": 64,
+  "judge_temperature": 0.0,
+  "decoding": "greedy (do_sample=False), one response per call, supplied judge_one unchanged",
+  "quantized_4bit": true,
+  "gpu_name": "Tesla T4",
+  "policies": [
+    "sft",
+    "dpo",
+    "ppo",
+    "grpo"
+  ],
+  "wall_clock_sec_this_session": 3328.0112783350005,
+  "smoke": false
+}

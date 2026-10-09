@@ -1,0 +1,42 @@
+{
+  "policies": {
+    "sft": {
+      "adapter": null,
+      "n_responses": 450,
+      "mean_response_tokens": 108.08,
+      "wall_clock_sec": 689.020762038,
+      "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab"
+    },
+    "dpo": {
+      "adapter": "outputs/task1_dpo/standard",
+      "n_responses": 450,
+      "mean_response_tokens": 109.38888888888889,
+      "wall_clock_sec": 893.7640641920002,
+      "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab"
+    },
+    "ppo": {
+      "adapter": "outputs/task2_ppo/standard",
+      "n_responses": 450,
+      "mean_response_tokens": 107.64222222222222,
+      "wall_clock_sec": 887.4090116949997,
+      "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab"
+    },
+    "grpo": {
+      "adapter": "outputs/task3_grpo/standard",
+      "n_responses": 450,
+      "mean_response_tokens": 108.14888888888889,
+      "wall_clock_sec": 883.0679885680006,
+      "git_commit": "ad04fb6250ab00bf4651cd7780934c62e41976ab"
+    }
+  },
+  "seed": 6304,
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "decoding": "greedy (do_sample=False), one response per prompt",
+  "safety_max_new_tokens": 256,
+  "max_prompt_length": 256,
+  "batch_size": 4,
+  "n_prompts": 450,
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "smoke": false
+}
