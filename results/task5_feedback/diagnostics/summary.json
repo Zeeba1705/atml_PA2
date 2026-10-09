@@ -1,0 +1,269 @@
+{
+  "git_commit": "e3c73d8450f6aae1c4414cdadee8f7b3b09dcf2d",
+  "seed": 6304,
+  "dataset_file": "data/task5_controlled_reward_diagnostics.jsonl",
+  "n_problems": 20,
+  "n_pairs": 80,
+  "judge_model": "Qwen/Qwen2.5-3B-Instruct",
+  "smoke": false,
+  "definitions": {
+    "controlled_pair": "the clean correct response against one perturbed response of the same problem; the clean response is the diagnostically better one in every pair",
+    "verifier": "better when its binary reward is higher for the clean response, tie when the two rewards are equal, wrong when it is higher for the perturbed response",
+    "judge": "the supplied pairwise judge with the clean response as candidate A: better = A, tie = TIE, wrong = B",
+    "s_reason": "better rate on clean vs corrupt_reasoning_correct_final",
+    "s_outcome": "better rate on clean vs good_reasoning_wrong_final",
+    "s_outcome_all_wrong_final": "better rate on clean vs good_reasoning_wrong_final and clean vs gold_distractor_wrong_final together",
+    "ci95": "bootstrap over problems"
+  },
+  "note": "a verifier tie on a reasoning-only or filler pair is expected: both responses end in the correct final answer",
+  "verifier_vs_expected_exact_reward_mismatches": 0,
+  "judge_seconds_this_session": 0.001724318000015046,
+  "summary": {
+    "per_perturbation": {
+      "corrupt_reasoning_correct_final": {
+        "verifier": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.0,
+          "better_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "tie_rate": 1.0,
+          "tie_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "judge": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.0,
+          "better_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "tie_rate": 1.0,
+          "tie_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "good_reasoning_wrong_final": {
+        "verifier": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 1.0,
+          "better_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "tie_rate": 0.0,
+          "tie_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "judge": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.0,
+          "better_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "tie_rate": 1.0,
+          "tie_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "persuasive_filler_correct": {
+        "verifier": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.0,
+          "better_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "tie_rate": 1.0,
+          "tie_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "judge": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.0,
+          "better_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "tie_rate": 0.75,
+          "tie_rate_ci95": [
+            0.55,
+            0.9
+          ],
+          "wrong_rate": 0.25,
+          "wrong_rate_ci95": [
+            0.1,
+            0.45
+          ]
+        }
+      },
+      "gold_distractor_wrong_final": {
+        "verifier": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 1.0,
+          "better_rate_ci95": [
+            1.0,
+            1.0
+          ],
+          "tie_rate": 0.0,
+          "tie_rate_ci95": [
+            0.0,
+            0.0
+          ],
+          "wrong_rate": 0.0,
+          "wrong_rate_ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "judge": {
+          "n_pairs": 20,
+          "n_problems": 20,
+          "better_rate": 0.25,
+          "better_rate_ci95": [
+            0.1,
+            0.45
+          ],
+          "tie_rate": 0.7,
+          "tie_rate_ci95": [
+            0.5,
+            0.9
+          ],
+          "wrong_rate": 0.05,
+          "wrong_rate_ci95": [
+            0.0,
+            0.15
+          ]
+        }
+      }
+    },
+    "sensitivity": {
+      "verifier": {
+        "s_reason": 0.0,
+        "s_reason_ci95": [
+          0.0,
+          0.0
+        ],
+        "s_reason_tie_rate": 1.0,
+        "s_reason_wrong_rate": 0.0,
+        "s_outcome": 1.0,
+        "s_outcome_ci95": [
+          1.0,
+          1.0
+        ],
+        "s_outcome_tie_rate": 0.0,
+        "s_outcome_wrong_rate": 0.0,
+        "s_outcome_all_wrong_final": 1.0,
+        "s_outcome_all_wrong_final_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "judge": {
+        "s_reason": 0.0,
+        "s_reason_ci95": [
+          0.0,
+          0.0
+        ],
+        "s_reason_tie_rate": 1.0,
+        "s_reason_wrong_rate": 0.0,
+        "s_outcome": 0.0,
+        "s_outcome_ci95": [
+          0.0,
+          0.0
+        ],
+        "s_outcome_tie_rate": 1.0,
+        "s_outcome_wrong_rate": 0.0,
+        "s_outcome_all_wrong_final": 0.125,
+        "s_outcome_all_wrong_final_ci95": [
+          0.05,
+          0.225
+        ]
+      }
+    },
+    "all_pairs": {
+      "verifier": {
+        "n_pairs": 80,
+        "n_problems": 20,
+        "better_rate": 0.5,
+        "better_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "tie_rate": 0.5,
+        "tie_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "wrong_rate": 0.0,
+        "wrong_rate_ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "judge": {
+        "n_pairs": 80,
+        "n_problems": 20,
+        "better_rate": 0.0625,
+        "better_rate_ci95": [
+          0.025,
+          0.1125
+        ],
+        "tie_rate": 0.8625,
+        "tie_rate_ci95": [
+          0.775,
+          0.9375
+        ],
+        "wrong_rate": 0.075,
+        "wrong_rate_ci95": [
+          0.025,
+          0.1375
+        ]
+      }
+    }
+  }
+}

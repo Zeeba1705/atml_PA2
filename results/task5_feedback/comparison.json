@@ -1,0 +1,61 @@
+{
+  "git_commit": "b1aa8685c9788dd9cca80a1bd07cae8a9bb12e9f",
+  "seed": 6304,
+  "smoke": false,
+  "diagnostics": {
+    "verifier": {
+      "s_reason": 0.0,
+      "s_reason_ci95": [
+        0.0,
+        0.0
+      ],
+      "s_reason_tie_rate": 1.0,
+      "s_reason_wrong_rate": 0.0,
+      "s_outcome": 1.0,
+      "s_outcome_ci95": [
+        1.0,
+        1.0
+      ],
+      "s_outcome_tie_rate": 0.0,
+      "s_outcome_wrong_rate": 0.0,
+      "s_outcome_all_wrong_final": 1.0,
+      "s_outcome_all_wrong_final_ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "judge": {
+      "s_reason": 0.0,
+      "s_reason_ci95": [
+        0.0,
+        0.0
+      ],
+      "s_reason_tie_rate": 1.0,
+      "s_reason_wrong_rate": 0.0,
+      "s_outcome": 0.0,
+      "s_outcome_ci95": [
+        0.0,
+        0.0
+      ],
+      "s_outcome_tie_rate": 1.0,
+      "s_outcome_wrong_rate": 0.0,
+      "s_outcome_all_wrong_final": 0.125,
+      "s_outcome_all_wrong_final_ci95": [
+        0.05,
+        0.225
+      ]
+    }
+  },
+  "failure_types": null,
+  "judge_cost": {
+    "gsm": {
+      "judge_comparisons": 900,
+      "judge_seconds_this_session": 70.58056754499967
+    },
+    "transfer": {
+      "judge_comparisons": 300,
+      "judge_seconds_this_session": 6.7200616649997755
+    }
+  },
+  "note": "the verifier is a regular expression and a number comparison and takes no measurable time; cached judge answers make judge_seconds smaller than a first run"
+}

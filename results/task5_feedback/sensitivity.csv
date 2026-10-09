@@ -1,0 +1,3 @@
+mechanism,s_reason,s_reason_tie_rate,s_reason_wrong_rate,s_outcome,s_outcome_tie_rate,s_outcome_wrong_rate,s_outcome_all_wrong_final
+verifier,0.0,1.0,0.0,1.0,0.0,0.0,1.0
+judge,0.0,1.0,0.0,0.0,1.0,0.0,0.125

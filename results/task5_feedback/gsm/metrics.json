@@ -1,0 +1,211 @@
+{
+  "git_commit": "e3c73d8450f6aae1c4414cdadee8f7b3b09dcf2d",
+  "dataset": "gsm",
+  "dataset_file": "data/gsm8k_eval.jsonl",
+  "n_problems": 300,
+  "seed": 6304,
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "judge_model": "Qwen/Qwen2.5-3B-Instruct",
+  "decoding": "greedy (do_sample=False), one response per problem",
+  "math_max_new_tokens": 512,
+  "max_prompt_length": 512,
+  "prompts_over_max_prompt_length": 0,
+  "batch_size": 8,
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "smoke": false,
+  "definitions": {
+    "exact_accuracy": "supplied verifier: the last '#### <number>' in the response equals the gold final answer",
+    "format_compliance": "a '#### <number>' final answer could be parsed from the response",
+    "win_rate": "supplied pairwise judge, a's response vs b's response to the same problem: win 1, tie 0.5, loss 0",
+    "verifier_judge_agreement": "over pairs where exactly one response is verifier-correct, the fraction where the judge prefers the correct one; judge ties on those pairs are counted separately",
+    "ci95": "bootstrap over problems, paired bootstrap for differences"
+  },
+  "policies": {
+    "sft": {
+      "n_problems": 300,
+      "exact_accuracy": 0.2833333333333333,
+      "exact_accuracy_ci95": [
+        0.23333333333333334,
+        0.33666666666666667
+      ],
+      "format_compliance": 0.35,
+      "format_compliance_ci95": [
+        0.2966666666666667,
+        0.4066666666666667
+      ],
+      "response_tokens_mean": 274.33,
+      "response_tokens_std": 84.71163497418758,
+      "response_tokens_mean_ci95": [
+        265.03075,
+        283.97766666666666
+      ],
+      "truncated_fraction": 0.016666666666666666,
+      "accuracy_given_format_ok": 0.8095238095238095
+    },
+    "rlvr": {
+      "n_problems": 300,
+      "exact_accuracy": 0.2866666666666667,
+      "exact_accuracy_ci95": [
+        0.23666666666666666,
+        0.33674999999999955
+      ],
+      "format_compliance": 0.36,
+      "format_compliance_ci95": [
+        0.30666666666666664,
+        0.4166666666666667
+      ],
+      "response_tokens_mean": 275.87666666666667,
+      "response_tokens_std": 86.29894624050877,
+      "response_tokens_mean_ci95": [
+        266.5276666666666,
+        285.51016666666663
+      ],
+      "truncated_fraction": 0.02,
+      "accuracy_given_format_ok": 0.7962962962962963
+    },
+    "rlaif": {
+      "n_problems": 300,
+      "exact_accuracy": 0.2866666666666667,
+      "exact_accuracy_ci95": [
+        0.23666666666666666,
+        0.34
+      ],
+      "format_compliance": 0.36,
+      "format_compliance_ci95": [
+        0.30666666666666664,
+        0.4134166666666662
+      ],
+      "response_tokens_mean": 275.45,
+      "response_tokens_std": 88.10834712632699,
+      "response_tokens_mean_ci95": [
+        265.9098333333334,
+        285.4074166666667
+      ],
+      "truncated_fraction": 0.023333333333333334,
+      "accuracy_given_format_ok": 0.7962962962962963
+    }
+  },
+  "paired_vs_sft": {
+    "rlvr": {
+      "correct_diff": 0.003333333333333355,
+      "correct_diff_ci95": [
+        -0.02,
+        0.02666666666666667
+      ],
+      "format_ok_diff": 0.010000000000000009,
+      "format_ok_diff_ci95": [
+        -0.02,
+        0.04
+      ],
+      "response_tokens_diff": 1.546666666666681,
+      "response_tokens_diff_ci95": [
+        -0.8401666666666666,
+        4.147749999999994
+      ]
+    },
+    "rlaif": {
+      "correct_diff": 0.003333333333333355,
+      "correct_diff_ci95": [
+        -0.013333333333333334,
+        0.02
+      ],
+      "format_ok_diff": 0.010000000000000009,
+      "format_ok_diff_ci95": [
+        -0.013333333333333334,
+        0.03
+      ],
+      "response_tokens_diff": 1.1200000000000045,
+      "response_tokens_diff_ci95": [
+        -1.3503333333333334,
+        3.7868333333333326
+      ]
+    }
+  },
+  "pairwise": {
+    "rlvr_vs_sft": {
+      "n_pairs": 300,
+      "wins": 5,
+      "ties": 292,
+      "losses": 3,
+      "tie_rate": 0.9733333333333334,
+      "win_rate": 0.5033333333333333,
+      "win_rate_ci95": [
+        0.49333333333333335,
+        0.5133333333333333
+      ],
+      "identical_responses": 235
+    },
+    "rlaif_vs_sft": {
+      "n_pairs": 300,
+      "wins": 2,
+      "ties": 293,
+      "losses": 5,
+      "tie_rate": 0.9766666666666667,
+      "win_rate": 0.495,
+      "win_rate_ci95": [
+        0.4866666666666667,
+        0.5033333333333333
+      ],
+      "identical_responses": 245
+    },
+    "rlaif_vs_rlvr": {
+      "n_pairs": 300,
+      "wins": 3,
+      "ties": 291,
+      "losses": 6,
+      "tie_rate": 0.97,
+      "win_rate": 0.495,
+      "win_rate_ci95": [
+        0.485,
+        0.5033333333333333
+      ],
+      "identical_responses": 246
+    }
+  },
+  "verifier_judge_agreement": {
+    "rlvr_vs_sft": {
+      "n_pairs_exactly_one_correct": 13,
+      "judge_prefers_correct": 1,
+      "judge_ties": 11,
+      "judge_prefers_wrong": 1,
+      "agreement": 0.07692307692307693,
+      "tie_rate": 0.8461538461538461,
+      "wrong_rate": 0.07692307692307693
+    },
+    "rlaif_vs_sft": {
+      "n_pairs_exactly_one_correct": 7,
+      "judge_prefers_correct": 0,
+      "judge_ties": 6,
+      "judge_prefers_wrong": 1,
+      "agreement": 0.0,
+      "tie_rate": 0.8571428571428571,
+      "wrong_rate": 0.14285714285714285
+    },
+    "rlaif_vs_rlvr": {
+      "n_pairs_exactly_one_correct": 10,
+      "judge_prefers_correct": 1,
+      "judge_ties": 9,
+      "judge_prefers_wrong": 0,
+      "agreement": 0.1,
+      "tie_rate": 0.9,
+      "wrong_rate": 0.0
+    },
+    "pooled_vs_sft": {
+      "n_pairs_exactly_one_correct": 20,
+      "judge_prefers_correct": 1,
+      "judge_ties": 17,
+      "judge_prefers_wrong": 2,
+      "agreement": 0.05,
+      "tie_rate": 0.85,
+      "wrong_rate": 0.1
+    }
+  },
+  "generation_seconds_this_session": {
+    "sft": 607.178626804,
+    "rlvr": 784.815702312,
+    "rlaif": 794.5744105000003
+  },
+  "judge_seconds_this_session": 70.58056754499967,
+  "judge_comparisons": 900
+}

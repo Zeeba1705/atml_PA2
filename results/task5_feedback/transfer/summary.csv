@@ -1,0 +1,4 @@
+dataset,policy,n_problems,exact_accuracy,exact_accuracy_ci_low,exact_accuracy_ci_high,format_compliance,format_compliance_ci_low,format_compliance_ci_high,response_tokens_mean,response_tokens_std,response_tokens_mean_ci_low,response_tokens_mean_ci_high,truncated_fraction,accuracy_given_format_ok,win_rate_vs_sft,win_rate_vs_sft_ci_low,win_rate_vs_sft_ci_high,tie_rate_vs_sft,verifier_judge_agreement_vs_sft,verifier_judge_pairs_vs_sft
+transfer,sft,100,0.44,0.35,0.54,0.57,0.47975,0.67,163.96,71.74579012039662,150.09924999999998,177.612,0.0,0.7719298245614035,,,,,,
+transfer,rlvr,100,0.46,0.36,0.56,0.59,0.49,0.69,164.07,72.54050661526978,150.00975,178.10025,0.0,0.7796610169491526,0.5,0.485,0.515,0.98,0.25,4.0
+transfer,rlaif,100,0.44,0.35,0.54,0.57,0.47,0.67,162.98,70.5209160462341,149.29925,176.33025,0.0,0.7719298245614035,0.505,0.49,0.525,0.97,0.5,2.0

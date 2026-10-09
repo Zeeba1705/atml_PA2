@@ -1,0 +1,11 @@
+perturbation,mechanism,n_pairs,better_rate,better_rate_ci_low,better_rate_ci_high,tie_rate,tie_rate_ci_low,tie_rate_ci_high,wrong_rate,wrong_rate_ci_low,wrong_rate_ci_high
+corrupt_reasoning_correct_final,verifier,20,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0
+corrupt_reasoning_correct_final,judge,20,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0
+good_reasoning_wrong_final,verifier,20,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+good_reasoning_wrong_final,judge,20,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0
+persuasive_filler_correct,verifier,20,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0
+persuasive_filler_correct,judge,20,0.0,0.0,0.0,0.75,0.55,0.9,0.25,0.1,0.45
+gold_distractor_wrong_final,verifier,20,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+gold_distractor_wrong_final,judge,20,0.25,0.1,0.45,0.7,0.5,0.9,0.05,0.0,0.15
+all_pairs,verifier,80,0.5,0.5,0.5,0.5,0.5,0.5,0.0,0.0,0.0
+all_pairs,judge,80,0.0625,0.025,0.1125,0.8625,0.775,0.9375,0.075,0.025,0.1375
