@@ -1,5 +1,5 @@
 {
-  "git_commit": "e3c73d8450f6aae1c4414cdadee8f7b3b09dcf2d",
+  "git_commit": "b1aa8685c9788dd9cca80a1bd07cae8a9bb12e9f",
   "seed": 6304,
   "definitions": {
     "safe_answer_rate": "P(SAFE_ANSWER | SAFE prompt)",

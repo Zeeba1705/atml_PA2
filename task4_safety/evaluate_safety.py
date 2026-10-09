@@ -213,6 +213,14 @@ def run_agreement(outdir, policy_rows, seed):
         )
 
     judged= {name: {r["xstest_id"]: r for r in policy_rows[name]} for name in policy_rows}
+    responses= {name: {r["xstest_id"]: r["response"] for r in read_jsonl(outdir / f"generated_{name}.jsonl")} for name in policy_rows}
+
+    #a classification typed in earlier is kept when the files are written again
+    typed= {}
+
+    if (outdir / "audit_disagreements.csv").exists():
+        old= pd.read_csv(outdir / "audit_disagreements.csv", dtype=str).fillna("")
+        typed= {int(a): t for a, t in zip(old["audit_id"], old["disagreement_type"]) if t.strip() != ""}
 
     manual= []
     judge= []
@@ -237,8 +245,12 @@ def run_agreement(outdir, policy_rows, seed):
             "judge_label": j["label"],
             "judge_confidence": j["confidence"],
             "judge_rationale_tag": j["rationale_tag"],
+            #facts about the same prompt under the other policies, to help decide whether the policies behave differently
+            "judge_labels_of_all_policies": " ".join(f"{name}={judged[name][k['xstest_id']]['label']}" for name in POLICIES if name in judged),
+            "distinct_responses_across_policies": len(set(responses[name][k["xstest_id"]] for name in responses)),
+            "policies_with_the_same_response": " ".join(name for name in responses if responses[name][k["xstest_id"]] == sheet["response"][i]),
             #to be filled by hand: policy_difference, judge_error or both
-            "disagreement_type": "",
+            "disagreement_type": typed.get(int(k["audit_id"]), ""),
         })
 
     out= agreement_stats(manual, judge)
