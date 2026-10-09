@@ -391,6 +391,77 @@ def task4():
     return out
 
 
+def task5():
+    out= ['<h2 id="task5">Task 5 - RLVR vs RLAIF</h2>']
+
+    s= read("task5_feedback/policy_summary.csv")
+
+    if s is None:
+        return out + [missing("task5_feedback/policy_summary.csv")]
+
+    out.append("<h3>In-domain and out-of-domain comparison</h3>")
+    out.append('<p class="note">One greedy response per problem, 512 new tokens. gsm: 300 GSM8K problems. transfer: 100 SVAMP problems. Exact accuracy is the supplied verifier (the last "#### number" equals the gold answer); format compliance means a "#### number" could be parsed; a response without one counts as wrong. Win rate: supplied pairwise judge against the SFT response to the same problem, win 1, tie 0.5, loss 0.</p>')
+    out.append(table(s, [
+        ("dataset", "dataset"), ("policy", "policy"), ("problems", "n_problems"), ("exact accuracy", ci(s, "exact_accuracy")), ("format compliance", ci(s, "format_compliance")),
+        ("accuracy given a parsed answer", "accuracy_given_format_ok"), ("mean response tokens", ci(s, "response_tokens_mean")), ("response tokens std", "response_tokens_std"),
+        ("truncated fraction", "truncated_fraction"), ("win rate vs SFT", "win_rate_vs_sft"), ("tie rate vs SFT", "tie_rate_vs_sft"),
+    ]))
+    out.append(figure("task5_feedback/figures/policy_comparison.png"))
+
+    p= read("task5_feedback/pairwise_and_agreement.csv")
+
+    if p is not None:
+        out.append("<h3>Pairwise judge results and verifier-judge agreement</h3>")
+        out.append('<p class="note">a_vs_b: the judge compares a\'s response with b\'s. Word-for-word identical responses are recorded as ties without calling the judge. Agreement: over the pairs where exactly one response is verifier-correct, how often the judge prefers the correct one, ties, or prefers the wrong one.</p>')
+        out.append(table(p, [
+            ("dataset", "dataset"), ("comparison", "comparison"), ("pairs", "n_pairs"), ("identical responses", "identical_responses"), ("wins", "wins"), ("ties", "ties"), ("losses", "losses"),
+            ("win rate", "win_rate"), ("pairs with exactly one correct", "agreement_n_pairs_exactly_one_correct"), ("judge prefers correct", "agreement_judge_prefers_correct"),
+            ("judge ties", "agreement_judge_ties"), ("judge prefers wrong", "agreement_judge_prefers_wrong"), ("agreement", "agreement_agreement"),
+        ]))
+
+    d= read("task5_feedback/transfer_drop.csv")
+
+    if d is not None:
+        out.append("<h3>Transfer minus in-domain</h3>")
+        out.append('<p class="note">Each set resampled on its own (they hold different problems).</p>')
+        cells= lambda key: [f"{fmt(float(v))} [{fmt(float(lo))}, {fmt(float(hi))}]" for v, lo, hi in zip(d[key + "_transfer_minus_gsm"], d[key + "_transfer_minus_gsm_ci_low"], d[key + "_transfer_minus_gsm_ci_high"])]
+        out.append(table(d, [
+            ("policy", "policy"), ("accuracy gsm", "correct_gsm"), ("accuracy transfer", "correct_transfer"), ("accuracy difference", cells("correct")),
+            ("format compliance difference", cells("format_ok")), ("response tokens difference", cells("response_tokens")),
+        ]))
+
+    r= read("task5_feedback/diagnostics/perturbation_rates.csv")
+
+    if r is not None:
+        out.append("<h3>Controlled diagnostic study</h3>")
+        out.append('<p class="note">20 problems, the clean correct response against each perturbed response of the same problem. better: the mechanism prefers the clean response. A verifier tie on a pair where both responses end in the correct final answer is expected. Intervals resample problems.</p>')
+        out.append(table(r, [
+            ("perturbation", "perturbation"), ("mechanism", "mechanism"), ("pairs", "n_pairs"), ("better rate", ci(r, "better_rate")), ("tie rate", ci(r, "tie_rate")), ("wrong rate", ci(r, "wrong_rate")),
+        ]))
+        out.append(figure("task5_feedback/figures/diagnostic_pairs.png"))
+
+    v= read("task5_feedback/sensitivity.csv")
+
+    if v is not None:
+        out.append('<p class="note">S_reason: better rate on clean vs corrupted reasoning with the same correct final. S_outcome: better rate on clean vs good reasoning with a wrong final; also over both wrong-final variants.</p>')
+        out.append(table(v, [
+            ("mechanism", "mechanism"), ("S_reason", "s_reason"), ("S_reason ties", "s_reason_tie_rate"), ("S_reason wrong", "s_reason_wrong_rate"),
+            ("S_outcome", "s_outcome"), ("S_outcome ties", "s_outcome_tie_rate"), ("S_outcome wrong", "s_outcome_wrong_rate"), ("S_outcome, all wrong-final pairs", "s_outcome_all_wrong_final"),
+        ]))
+
+    f= read("task5_feedback/failure_types.csv")
+
+    if f is not None:
+        out.append("<h3>Failure types on the transfer set (hand-labelled)</h3>")
+        out.append(table(f, [(c, c) for c in f.columns if not c.endswith("_fraction")]))
+    else:
+        out.append('<p class="note">Failure types not tabulated yet: label <code>results/task5_feedback/transfer/failure_types_unique.csv</code>, then rerun <code>python -m task5_feedback.compare_feedback</code>.</p>')
+
+    out.append('<p class="note">Qualitative material: the diagnostic responses are in the course file <code>data/task5_controlled_reward_diagnostics.jsonl</code>, with both mechanisms\' preferences per pair in <code>results/task5_feedback/diagnostics/pairs.jsonl</code>.</p>')
+
+    return out
+
+
 def main(args):
     try:
         commit= subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=str(repo_path(".")), text=True).strip()
@@ -400,12 +471,12 @@ def main(args):
     parts= [
         "<!doctype html><html><head><meta charset='utf-8'><title>PA2 results overview</title>",
         f"<style>{STYLE}</style></head><body>",
-        "<h1>ATML PA2 - results overview, Tasks 1-4</h1>",
+        "<h1>ATML PA2 - results overview, Tasks 1-5</h1>",
         f'<p class="note">Numbers and figures only, generated from the saved result files by <code>python -m scripts.build_overview</code> at commit {commit}. Brackets are 95% bootstrap intervals (2000 resamples, seed 6304). Every value traces to a CSV or JSON under <code>results/</code>.</p>',
-        '<nav><a href="#task1">Task 1 - DPO</a><a href="#task2">Task 2 - PPO</a><a href="#task3">Task 3 - GRPO</a><a href="#task4">Task 4 - safety</a></nav>',
+        '<nav><a href="#task1">Task 1 - DPO</a><a href="#task2">Task 2 - PPO</a><a href="#task3">Task 3 - GRPO</a><a href="#task4">Task 4 - safety</a><a href="#task5">Task 5 - RLVR vs RLAIF</a></nav>',
     ]
 
-    parts += task1() + task2() + task3() + task4()
+    parts += task1() + task2() + task3() + task4() + task5()
     parts.append("</body></html>")
 
     path= repo_path(args.output)
