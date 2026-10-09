@@ -343,6 +343,22 @@ python -m task5_feedback.evaluate_math --config configs/feedback.yaml --dataset 
 python -m task5_feedback.compare_feedback --config configs/feedback.yaml
 ```
 
+The supplied verifier (`task5_feedback/rlvr.py`) and pairwise judge (`task5_feedback/rlaif.py`) are used unchanged. On Kaggle use `kaggle/task5.ipynb`.
+
+```bash
+# smoke: tiny model as policy and judge, no adapters, 4 problems, writes under results/smoke/task5_feedback
+python -m task5_feedback.evaluate_math --config configs/feedback.yaml --dataset gsm --smoke
+python -m task5_feedback.evaluate_math --config configs/feedback.yaml --dataset transfer --smoke
+python -m task5_feedback.score_perturbations --config configs/feedback.yaml --smoke
+python -m task5_feedback.compare_feedback --config configs/feedback.yaml --smoke
+```
+
+- `evaluate_math` generates one greedy response per policy (SFT, RLVR, RLAIF) per problem with `math_max_new_tokens` new tokens and writes `results/task5_feedback/<dataset>/`: `generated_<policy>.jsonl`, `summary.csv`, `metrics.json` and `pairwise.jsonl`. The handout does not fix the decoding for this task; greedy was chosen so that accuracy differences are not blurred by sampling. Format compliance means a `#### <number>` final answer could be parsed. The judge compares RLVR with SFT, RLAIF with SFT and RLAIF with RLVR on each problem (win 1, tie 0.5, loss 0, ties also reported on their own). When two policies give word-for-word the same response the pair is recorded as a tie without calling the judge, and the number of such pairs is reported as `identical_responses`. `--max-examples N` is a partial run and writes to `results/task5_feedback_quicktest/`.
+- Verifier-judge agreement: over the pairs where exactly one of the two responses is verifier-correct, the fraction where the judge prefers the correct one; judge ties and wrong preferences on those pairs are reported next to it.
+- The transfer run also writes `transfer/failure_types_sheet.csv`: up to 30 wrong responses per policy, sampled with the config seed, with an empty `failure_type` column to fill by hand with `format_failure`, `arithmetic_slip`, `misread_problem`, `right_method_wrong_final` or `other`. A sheet that already has labels is never overwritten.
+- `score_perturbations` scores the 80 controlled pairs of the diagnostic set (the clean response against each of the four perturbed responses of the same problem; the clean one is the better one in every pair) with both mechanisms and writes `diagnostics/pairs.jsonl`, `perturbation_rates.csv` and `summary.json`. The verifier prefers the response with the higher binary reward and ties when they are equal. S_reason is the better-response rate on clean vs `corrupt_reasoning_correct_final`; S_outcome on clean vs `good_reasoning_wrong_final`, and it is also reported over both wrong-final variants. Intervals resample the 20 problems.
+- `compare_feedback` combines everything into `policy_summary.csv`, `transfer_drop.csv` (transfer minus in-domain, each set resampled on its own), `pairwise_and_agreement.csv`, `sensitivity.csv`, two figures, and `failure_types.csv` once the failure sheet is fully labelled.
+
 ## 6. Reproducibility rules
 
 - Do not alter course-provided data, cached rollouts, or supplied checkpoints.
