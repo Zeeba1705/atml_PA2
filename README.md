@@ -144,6 +144,8 @@ If an optimizer step produces non-finite gradients in float16, the gradient scal
 
 `--resume` continues from the latest checkpoint in `outputs/task1_dpo/<run_name>/checkpoints/` and starts from scratch when there is none. `--save-every` is in optimizer steps (default 10). Rows whose prompt alone reaches `max_sequence_length` are dropped for every run (after the `--max-examples` slice, never topped back up); the dropped `prompt_id`s and counts are written to `results/task1_dpo/filtered_examples.json`.
 
+Tables and figures for Task 1 (CPU, reads the saved result files only): `python -m task1_dpo.make_tables --config configs/dpo.yaml` writes `summary.csv` (every run with its training budget, held-out loss, preference accuracy, margin, KL, reward and length, with bootstrap intervals where per-item values were saved), `stratified.csv`, `paired_differences.csv` and five figures into `results/task1_dpo/`.
+
 ### Task 2 - PPO
 
 ```bash
@@ -332,6 +334,10 @@ python -m task4_safety.evaluate_safety --config configs/feedback.yaml --audit-do
 - `evaluate_safety` writes `safety_summary.csv` (safe-answer, safe over-refusal, unsafe-compliance, unsafe justified-refusal and ambiguous rates with bootstrap intervals over prompts, judge parse failures, response length), `class_label_distribution.csv`, `category_label_distribution.csv` (all five labels per XSTest category and policy) and `paired_vs_sft.csv` (per-prompt differences from the base policy). The judge does not see the benchmark class, so the rates of one class need not sum to 1.
 - With `--audit-done` it also writes `audit_agreement.json`, `audit_confusion.csv` (5x5, manual rows by judge columns), `audit_labels_joined.csv` and `audit_disagreements.csv` with an empty `disagreement_type` column. Raw agreement and Cohen's kappa are computed over the examples where neither label is AMBIGUOUS; AMBIGUOUS counts are reported separately and an AMBIGUOUS label on either side never counts as agreement. It stops without showing anything if any manual label is missing or misspelled.
 
+`python -m task4_safety.make_tables --config configs/feedback.yaml` writes two figures into `results/task4_safety/figures/` and `qualitative_candidates.csv`, a list of responses picked by rule from the judge labels (an unsafe prompt that was answered, a safe prompt that was refused, or policies that received different labels) to read by hand.
+
+Files that contain model responses (`generated_*.jsonl`, the audit sheet, the joined audit files and the candidate list) are not tracked. `manual_audit_labels.csv` holds the 60 manual labels next to the judge labels without any text.
+
 ### Task 5 - RLVR vs RLAIF
 
 The exact verifier and pairwise AI judge are supplied; you implement the evaluation/analysis.
@@ -358,6 +364,10 @@ python -m task5_feedback.compare_feedback --config configs/feedback.yaml --smoke
 - The transfer run also writes `transfer/failure_types_sheet.csv`: up to 30 wrong responses per policy, sampled with the config seed, with an empty `failure_type` column to fill by hand with `format_failure`, `arithmetic_slip`, `misread_problem`, `right_method_wrong_final` or `other`. A sheet that already has labels is never overwritten.
 - `score_perturbations` scores the 80 controlled pairs of the diagnostic set (the clean response against each of the four perturbed responses of the same problem; the clean one is the better one in every pair) with both mechanisms and writes `diagnostics/pairs.jsonl`, `perturbation_rates.csv` and `summary.json`. The verifier prefers the response with the higher binary reward and ties when they are equal. S_reason is the better-response rate on clean vs `corrupt_reasoning_correct_final`; S_outcome on clean vs `good_reasoning_wrong_final`, and it is also reported over both wrong-final variants. Intervals resample the 20 problems.
 - `compare_feedback` combines everything into `policy_summary.csv`, `transfer_drop.csv` (transfer minus in-domain, each set resampled on its own), `pairwise_and_agreement.csv`, `sensitivity.csv`, two figures, and `failure_types.csv` once the failure sheet is fully labelled.
+
+### Results overview
+
+`python -m scripts.build_overview` collects the tables and figures of Tasks 1-4 into one page, `results/overview.html` (numbers and figures only).
 
 ## 6. Reproducibility rules
 
