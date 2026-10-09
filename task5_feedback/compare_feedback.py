@@ -53,6 +53,56 @@ def drop_table(generated, seed, n_resamples=2000):
     return pd.DataFrame(rows)
 
 
+def unique_failure_sheet(sheet_path, unique_path):
+    #the three policies often give the same wrong response to a problem, so each distinct response is listed once
+    #to be labelled once. labels typed there are copied to every matching row of the full sheet, nothing else is filled in
+    sheet= pd.read_csv(sheet_path, dtype=str).fillna("")
+
+    if not unique_path.exists():
+        rows= []
+
+        for (problem, response), group in sheet.groupby(["problem_id", "response"], sort=False):
+            first= group.iloc[0]
+
+            rows.append({
+                "policies": " ".join(group["policy"]),
+                "problem_id": problem,
+                "question": first["question"],
+                "gold_final": first["gold_final"],
+                "predicted_final": first["predicted_final"],
+                "format_ok": first["format_ok"],
+                "response": response,
+                "failure_type": "",
+            })
+
+        pd.DataFrame(rows).to_csv(unique_path, index=False)
+
+        print(f"wrote {len(rows)} distinct wrong responses to label once:", unique_path)
+
+        return
+
+    unique= pd.read_csv(unique_path, dtype=str).fillna("")
+    labels= {(p, r): t.strip() for p, r, t in zip(unique["problem_id"], unique["response"], unique["failure_type"]) if t.strip() != ""}
+
+    if len(labels) == 0:
+        return
+
+    copied= 0
+
+    for i in range(len(sheet)):
+        key= (sheet["problem_id"][i], sheet["response"][i])
+
+        #only empty cells are filled, a label typed directly into the full sheet is never replaced
+        if sheet["failure_type"][i].strip() == "" and key in labels:
+            sheet.loc[i, "failure_type"]= labels[key]
+            copied += 1
+
+    if copied > 0:
+        sheet.to_csv(sheet_path, index=False)
+
+        print(f"copied {copied} hand-assigned failure types from {unique_path.name} into {sheet_path.name}")
+
+
 def failure_table(sheet_path):
     #counts of the hand-assigned failure types per policy, only once every row has a label
     sheet= pd.read_csv(sheet_path, dtype=str).fillna("")
@@ -228,6 +278,8 @@ def main(args):
     sheet_path= outdir / "transfer" / "failure_types_sheet.csv"
 
     if sheet_path.exists():
+        unique_failure_sheet(sheet_path, outdir / "transfer" / "failure_types_unique.csv")
+
         failures= failure_table(sheet_path)
 
         if failures is not None:
