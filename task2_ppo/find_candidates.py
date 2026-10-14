@@ -11,7 +11,7 @@ from task2_ppo.continue_train import adjust_config
 LENGTH_RATIO= 1.5
 NGRAM= 8
 NGRAM_REPEATS= 3
-SKIP_PREFIXES= ["quicktest", "_"]
+SKIP_PREFIXES= ["quicktest", "_", "dpo_"]
 
 
 def max_ngram_repeats(text, n):
