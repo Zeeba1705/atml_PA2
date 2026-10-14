@@ -462,6 +462,30 @@ def task5():
     return out
 
 
+def cross_task():
+    out= ['<h2 id="cross">Cross-task: all final policies under one held-out protocol</h2>']
+
+    t= read("cross_task_heldout.csv")
+
+    if t is None:
+        return out + [missing("cross_task_heldout.csv")]
+
+    out.append('<p class="note">Every row uses the Task 2 held-out protocol: the same 200 prompts, reward model, 768-token cap, sampling (temperature 0.7, top-p 0.9), seed and batch size. Nothing was trained or selected with these numbers. Differences are the policy minus the base policy on the same prompts, with a paired bootstrap interval; "identical responses" counts prompts where the policy and the base policy produced exactly the same text.</p>')
+    out.append(table(t, [
+        ("policy", "policy"), ("what it is", "description"), ("reward", ci(t, "reward_mean")), ("KL per token", ci(t, "kl_token_mean")),
+        ("entropy (sampled)", ci(t, "entropy")), ("length mean", ci(t, "length_mean")), ("length std", "length_std"), ("no EOS", ci(t, "no_eos_fraction")),
+    ]))
+
+    d= t[t["policy"] != "sft"].reset_index(drop=True)
+    cells= lambda key: [f"{fmt(float(v))} [{fmt(float(lo))}, {fmt(float(hi))}]" for v, lo, hi in zip(d[key + "_diff_vs_sft"], d[key + "_diff_vs_sft_ci_low"], d[key + "_diff_vs_sft_ci_high"])]
+    out.append(table(d, [
+        ("policy", "policy"), ("identical responses to SFT", "identical_responses_to_sft"), ("reward difference from SFT", cells("reward")), ("length difference from SFT (tokens)", cells("n_tokens")),
+    ]))
+    out.append(figure("cross_task_heldout.png"))
+
+    return out
+
+
 def main(args):
     try:
         commit= subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=str(repo_path(".")), text=True).strip()
@@ -473,10 +497,10 @@ def main(args):
         f"<style>{STYLE}</style></head><body>",
         "<h1>ATML PA2 - results overview, Tasks 1-5</h1>",
         f'<p class="note">Numbers and figures only, generated from the saved result files by <code>python -m scripts.build_overview</code> at commit {commit}. Brackets are 95% bootstrap intervals (2000 resamples, seed 6304). Every value traces to a CSV or JSON under <code>results/</code>.</p>',
-        '<nav><a href="#task1">Task 1 - DPO</a><a href="#task2">Task 2 - PPO</a><a href="#task3">Task 3 - GRPO</a><a href="#task4">Task 4 - safety</a><a href="#task5">Task 5 - RLVR vs RLAIF</a></nav>',
+        '<nav><a href="#task1">Task 1 - DPO</a><a href="#task2">Task 2 - PPO</a><a href="#task3">Task 3 - GRPO</a><a href="#task4">Task 4 - safety</a><a href="#task5">Task 5 - RLVR vs RLAIF</a><a href="#cross">Cross-task</a></nav>',
     ]
 
-    parts += task1() + task2() + task3() + task4() + task5()
+    parts += task1() + task2() + task3() + task4() + task5() + cross_task()
     parts.append("</body></html>")
 
     path= repo_path(args.output)

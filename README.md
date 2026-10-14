@@ -365,6 +365,23 @@ python -m task5_feedback.compare_feedback --config configs/feedback.yaml --smoke
 - `score_perturbations` scores the 80 controlled pairs of the diagnostic set (the clean response against each of the four perturbed responses of the same problem; the clean one is the better one in every pair) with both mechanisms and writes `diagnostics/pairs.jsonl`, `perturbation_rates.csv` and `summary.json`. The verifier prefers the response with the higher binary reward and ties when they are equal. S_reason is the better-response rate on clean vs `corrupt_reasoning_correct_final`; S_outcome on clean vs `good_reasoning_wrong_final`, and it is also reported over both wrong-final variants. Intervals resample the 20 problems.
 - `compare_feedback` combines everything into `policy_summary.csv`, `transfer_drop.csv` (transfer minus in-domain, each set resampled on its own), `pairwise_and_agreement.csv`, `sensitivity.csv`, two figures, and `failure_types.csv` once the failure sheet is fully labelled.
 
+### Cross-task held-out comparison
+
+The final standard policies of Tasks 1-3 were evaluated with the Task 2 held-out protocol after Task 4 was finished (nothing was trained or selected with these numbers):
+
+```bash
+python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task1_dpo/standard --name dpo_standard
+python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task2_ppo/standard --name standard
+python -m task3_grpo.evaluate --config configs/grpo.yaml --adapter outputs/task3_grpo/standard --name standard
+python -m scripts.cross_task_table
+```
+
+`scripts.cross_task_table` puts SFT, DPO, PPO, GRPO and the two supplied midpoints in one table, `results/cross_task_heldout.csv` (reward, KL, entropy, length and no-EOS fraction with bootstrap intervals, and each policy's paired difference from SFT on the same prompts), with the figure `results/cross_task_heldout.png`.
+
+### Length structure of the DPO data
+
+`python describe_dpo_lengths.py` describes the four DPO files (chosen and rejected lengths in Qwen tokens, how often the chosen response is longer, and length strata) and writes `results/task1_dpo/dataset_length_stats.json`. It counts every row of each file, before the prompt-length filter used in training.
+
 ### Results overview
 
 `python -m scripts.build_overview` collects the tables and figures of Tasks 1-5 into one page, `results/overview.html` (numbers and figures only).
