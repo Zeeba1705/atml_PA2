@@ -386,6 +386,12 @@ python -m scripts.cross_task_table
 
 `python -m scripts.build_overview` collects the tables and figures of Tasks 1-5 into one page, `results/overview.html` (numbers and figures only).
 
+## Attribution
+
+- Starter code, configs, the DPO/PPO/GRPO objective utilities, the Task 4 safety judge (`task4_safety/judge_responses.py`: prompt, parser and `judge_one`), the Task 5 verifier (`task5_feedback/rlvr.py`) and pairwise judge (`task5_feedback/rlaif.py`), and the asset scripts come from the course release, https://github.com/AbDu11aHHH/ATML-PA2-LLM-PostTraining. The judges and the verifier are used unchanged; the deliberate defects in the three released objectives were fixed as described in the commit history ("Fix DPO objective", "Fix PPO objective", "Fix GRPO objective").
+- Course data, cached rollouts and checkpoints are downloaded from the course asset release and are not part of this repository.
+- No code was copied from TRL or other external libraries; the libraries are used through their public APIs only (versions pinned in `requirements.txt`).
+
 ## 6. Reproducibility rules
 
 - Do not alter course-provided data, cached rollouts, or supplied checkpoints.

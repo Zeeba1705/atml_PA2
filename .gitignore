@@ -50,3 +50,7 @@ style_ref/
 results/**/audit_disagreements_side_by_side.txt
 results/**/failure_types_unique.csv
 results/**/diagnostic_pairs_side_by_side.txt
+
+# Local assistant configuration, kept out of the repository
+CLAUDE.md
+.claude/
